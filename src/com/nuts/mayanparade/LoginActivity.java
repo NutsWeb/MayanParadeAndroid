@@ -1,32 +1,44 @@
 package com.nuts.mayanparade;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class MainActivity extends Activity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
-
+public class LoginActivity extends Activity {
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -65,7 +77,8 @@ public class MainActivity extends Activity {
 					@Override
 					public boolean onEditorAction(TextView textView, int id,
 							KeyEvent keyEvent) {
-						if (id == R.id.login || id == EditorInfo.IME_NULL) {
+						//if (id == R.id.login || id == EditorInfo.IME_NULL) {
+						if (id == EditorInfo.IME_NULL) {
 							attemptLogin();
 							return true;
 						}
@@ -76,12 +89,28 @@ public class MainActivity extends Activity {
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-
+		
+		//Login listener
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						attemptLogin();
+					}
+				});
+		//Add user listeners
+		findViewById(R.id.button1).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						showCreateAccount();
+					}
+				});
+		findViewById(R.id.add_usr_btn).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						addUserDB();
 					}
 				});
 	}
@@ -119,7 +148,7 @@ public class MainActivity extends Activity {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} else if (mPassword.length() < 4) {
+		} else if (mPassword.length() < 2) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
@@ -130,7 +159,7 @@ public class MainActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
+		} else if (!mEmail.contains("@") && (!mEmail.contains("."))) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
@@ -148,6 +177,57 @@ public class MainActivity extends Activity {
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
 		}
+	}
+
+	//Add user callbacks
+	public void showCreateAccount()
+	{
+		RelativeLayout logForm = (RelativeLayout)findViewById(R.id.login_form);
+		logForm.setVisibility(View.GONE);
+		RelativeLayout layAdd = (RelativeLayout)findViewById(R.id.add_usr_layer);
+		layAdd.setVisibility(View.VISIBLE);
+	}
+	
+	public void addUserDB()
+	{
+		HttpClient webClient = new DefaultHttpClient();
+		HttpPost webPost = new HttpPost("http://www.nuts.mx/pakales/home/addUser");
+		
+		try
+		{
+			List<NameValuePair> data = new ArrayList<NameValuePair>(5);
+			data.add(new BasicNameValuePair("name", "dummy2"));
+			data.add(new BasicNameValuePair("lastname", "dumm2"));
+			data.add(new BasicNameValuePair("email", "dummy@test.com"));
+			data.add(new BasicNameValuePair("password", "abcd2"));
+			data.add(new BasicNameValuePair("type", "site"));
+			webPost.setEntity(new UrlEncodedFormEntity(data));
+			
+			HttpResponse response = webClient.execute(webPost);
+			InputStream istrm = response.getEntity().getContent();
+			InputStreamReader srdr = new InputStreamReader(istrm);
+			BufferedReader brdr = new BufferedReader(srdr);
+			StringBuilder sbuild = new StringBuilder();
+			String sdata = null;
+			
+			while((sdata = brdr.readLine()) != null)
+				sbuild.append(sdata+";");
+			
+			Log.i("Versión","AU>>>>>>>>>"+sbuild.toString());
+		}
+		catch(ClientProtocolException e)
+		{
+			Log.i("Versión","E>>>>>>>>>>Error protocolo");
+		}
+		catch(IOException e)
+		{
+			Log.i("Versión","E>>>>>>>>>>Error IO");
+		}
+		
+		RelativeLayout layAdd = (RelativeLayout)findViewById(R.id.add_usr_layer);
+		layAdd.setVisibility(View.GONE);
+		RelativeLayout logForm = (RelativeLayout)findViewById(R.id.login_form);
+		logForm.setVisibility(View.VISIBLE);
 	}
 
 	/**
@@ -198,24 +278,43 @@ public class MainActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
 
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
+			HttpClient webClient = new DefaultHttpClient();
+			HttpPost webPost = new HttpPost("http://www.nuts.mx/pakales/account/login");
+			
+			try
+			{
+				List<NameValuePair> data = new ArrayList<NameValuePair>(2);
+				EditText etUser = (EditText)findViewById(R.id.email);
+				EditText etPass = (EditText)findViewById(R.id.password);
+				data.add(new BasicNameValuePair("username", etUser.getText().toString()));
+				data.add(new BasicNameValuePair("password", etPass.getText().toString()));
+				webPost.setEntity(new UrlEncodedFormEntity(data));
+				
+				HttpResponse response = webClient.execute(webPost);
+				InputStream resStream = response.getEntity().getContent();
+				InputStreamReader srdr = new InputStreamReader(resStream);
+				BufferedReader brdr = new BufferedReader(srdr);
+				StringBuilder sbuild = new StringBuilder();
+				String sdata = null;
+				
+				while((sdata = brdr.readLine()) != null)
+					sbuild.append(sdata+"\n");
+				
+				if(!sbuild.toString().equals("Ok"))
+					return false;
+			}
+			catch (ClientProtocolException e)
+			{
+				Log.i("Versión","E>>>>>>>>>>Error protocolo");
 				return false;
 			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
+			catch (IOException e)
+			{
+				Log.i("Versión","E>>>>>>>>>>Error IO");
+				return false;
 			}
-
-			// TODO: register the new account here.
+			
 			return true;
 		}
 
@@ -225,7 +324,8 @@ public class MainActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
-				finish();
+				Intent nextAct = new Intent(getBaseContext(),MapActivity.class);
+				startActivity(nextAct);
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
