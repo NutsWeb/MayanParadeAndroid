@@ -8,10 +8,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -147,6 +149,7 @@ public class MainActivity extends Activity {
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
+			Log.i("Versión",">>>>>>>>>>>>>>>>> ACA");
 		}
 	}
 
@@ -225,7 +228,7 @@ public class MainActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
-				finish();
+				//finish();
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
