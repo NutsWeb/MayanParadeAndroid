@@ -36,8 +36,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:visibility="visible" >
+        android:gravity="center_horizontal"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
         android:layout_marginTop="20dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <ImageView
             android:id="@+id/imageView3"
@@ -161,7 +161,7 @@
         android:layout_marginTop="46dp"
         android:baselineAligned="false"
         android:orientation="horizontal"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <ImageView
             android:id="@+id/ImageView01"
@@ -185,8 +185,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:visibility="gone" >
+        android:gravity="center"
+        android:visibility="visible" >
 
         <ImageView
             android:id="@+id/imageView4"
@@ -214,6 +214,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -229,10 +230,10 @@
                 android:layout_weight="1"
                 android:contentDescription="@string/desc"
                 android:src="@drawable/titulo" />
-
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="207dp"
             android:layout_height="160dp"
             android:layout_centerInParent="true"
@@ -269,7 +270,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/desc"
-                    android:src="@drawable/nombre_gris" />
+                    android:src="@drawable/apellido_gris" />
 
                 <EditText
                     android:id="@+id/EditText06"
@@ -289,7 +290,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/desc"
-                    android:src="@drawable/nombre_gris" />
+                    android:src="@drawable/correo_gris" />
 
                 <EditText
                     android:id="@+id/EditText04"
@@ -309,7 +310,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/desc"
-                    android:src="@drawable/nombre_gris" />
+                    android:src="@drawable/pass_gris" />
 
                 <EditText
                     android:id="@+id/EditText02"
@@ -329,7 +330,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/desc"
-                    android:src="@drawable/nombre_gris" />
+                    android:src="@drawable/repcontr_gris" />
 
                 <EditText
                     android:id="@+id/editText1"
@@ -337,9 +338,39 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/textura_box"
                     android:inputType="textPersonName" />
-
             </LinearLayout>
+        </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="207dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/linearLayout2"
+            android:layout_below="@+id/linearLayout2"
+            android:layout_marginTop="55dp"
+            android:baselineAligned="_baseline"
+            android:gravity="bottom" >
+
+            <CheckBox
+                android:id="@+id/checkBox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="18dp"
+                android:layout_marginLeft="14dp" />
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:src="@drawable/checkbox_at" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/checkbox_vt" />
         </LinearLayout>
 
     </RelativeLayout>
