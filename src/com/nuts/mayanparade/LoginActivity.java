@@ -35,13 +35,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -92,12 +93,28 @@ public class MainActivity extends Activity {
 		mLoginFormView = findViewById(com.nuts.mayanparade.R.id.login_form);
 		mLoginStatusView = findViewById(com.nuts.mayanparade.R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(com.nuts.mayanparade.R.id.login_status_message);
-
+		
+		//Login listener
 		findViewById(com.nuts.mayanparade.R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						attemptLogin();
+					}
+				});
+		//Add user listeners
+		findViewById(com.nuts.mayanparade.R.id.button1).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						showCreateAccount();
+					}
+				});
+		findViewById(com.nuts.mayanparade.R.id.add_usr_btn).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						addUserDB();
 					}
 				});
 	}
@@ -164,6 +181,57 @@ public class MainActivity extends Activity {
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
 		}
+	}
+
+	//Add user callbacks
+	public void showCreateAccount()
+	{
+		RelativeLayout logForm = (RelativeLayout)findViewById(com.nuts.mayanparade.R.id.login_form);
+		logForm.setVisibility(View.GONE);
+		RelativeLayout layAdd = (RelativeLayout)findViewById(com.nuts.mayanparade.R.id.add_usr_layer);
+		layAdd.setVisibility(View.VISIBLE);
+	}
+	
+	public void addUserDB()
+	{
+		HttpClient webClient = new DefaultHttpClient();
+		HttpPost webPost = new HttpPost("http://www.nuts.mx/pakales/home/addUser");
+		
+		try
+		{
+			List<NameValuePair> data = new ArrayList<NameValuePair>(5);
+			data.add(new BasicNameValuePair("name", "dummy2"));
+			data.add(new BasicNameValuePair("lastname", "dumm2"));
+			data.add(new BasicNameValuePair("email", "dummy@test.com"));
+			data.add(new BasicNameValuePair("password", "abcd2"));
+			data.add(new BasicNameValuePair("type", "site"));
+			webPost.setEntity(new UrlEncodedFormEntity(data));
+			
+			HttpResponse response = webClient.execute(webPost);
+			InputStream istrm = response.getEntity().getContent();
+			InputStreamReader srdr = new InputStreamReader(istrm);
+			BufferedReader brdr = new BufferedReader(srdr);
+			StringBuilder sbuild = new StringBuilder();
+			String sdata = null;
+			
+			while((sdata = brdr.readLine()) != null)
+				sbuild.append(sdata+";");
+			
+			Log.i("Versión","AU>>>>>>>>>"+sbuild.toString());
+		}
+		catch(ClientProtocolException e)
+		{
+			Log.i("Versión","E>>>>>>>>>>Error protocolo");
+		}
+		catch(IOException e)
+		{
+			Log.i("Versión","E>>>>>>>>>>Error IO");
+		}
+		
+		RelativeLayout layAdd = (RelativeLayout)findViewById(com.nuts.mayanparade.R.id.add_usr_layer);
+		layAdd.setVisibility(View.GONE);
+		RelativeLayout logForm = (RelativeLayout)findViewById(com.nuts.mayanparade.R.id.login_form);
+		logForm.setVisibility(View.VISIBLE);
 	}
 
 	/**
@@ -235,19 +303,19 @@ public class MainActivity extends Activity {
 				String sdata = null;
 				
 				while((sdata = brdr.readLine()) != null)
-					sbuild.append(sdata);
+					sbuild.append(sdata+"\n");
 				
 				if(!sbuild.toString().equals("Ok"))
 					return false;
 			}
 			catch (ClientProtocolException e)
 			{
-				Log.i("Versión",">>>>>>>>>>Error protocolo");
+				Log.i("Versión","E>>>>>>>>>>Error protocolo");
 				return false;
 			}
 			catch (IOException e)
 			{
-				Log.i("Versión",">>>>>>>>>>Error IO");
+				Log.i("Versión","E>>>>>>>>>>Error IO");
 				return false;
 			}
 			
