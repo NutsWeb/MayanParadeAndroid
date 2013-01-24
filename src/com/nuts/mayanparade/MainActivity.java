@@ -1,9 +1,28 @@
 package com.nuts.mayanparade;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,13 +41,6 @@ import android.widget.TextView;
  * well.
  */
 public class MainActivity extends Activity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
-
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -121,7 +133,7 @@ public class MainActivity extends Activity {
 			mPasswordView.setError(getString(R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
-		} else if (mPassword.length() < 4) {
+		} else if (mPassword.length() < 2) {
 			mPasswordView.setError(getString(R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
@@ -132,7 +144,7 @@ public class MainActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
+		} else if (!mEmail.contains("@") && (!mEmail.contains("."))) {
 			mEmailView.setError(getString(R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
@@ -149,7 +161,6 @@ public class MainActivity extends Activity {
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
-			Log.i("Versión",">>>>>>>>>>>>>>>>> ACA");
 		}
 	}
 
@@ -201,24 +212,43 @@ public class MainActivity extends Activity {
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
 
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
+			HttpClient webClient = new DefaultHttpClient();
+			HttpPost webPost = new HttpPost("http://www.nuts.mx/pakales/account/login");
+			
+			try
+			{
+				List<NameValuePair> data = new ArrayList<NameValuePair>(2);
+				EditText etUser = (EditText)findViewById(R.id.email);
+				EditText etPass = (EditText)findViewById(R.id.password);
+				data.add(new BasicNameValuePair("username", etUser.getText().toString()));
+				data.add(new BasicNameValuePair("password", etPass.getText().toString()));
+				webPost.setEntity(new UrlEncodedFormEntity(data));
+				
+				HttpResponse response = webClient.execute(webPost);
+				InputStream resStream = response.getEntity().getContent();
+				InputStreamReader srdr = new InputStreamReader(resStream);
+				BufferedReader brdr = new BufferedReader(srdr);
+				StringBuilder sbuild = new StringBuilder();
+				String sdata = null;
+				
+				while((sdata = brdr.readLine()) != null)
+					sbuild.append(sdata);
+				
+				if(!sbuild.toString().equals("Ok"))
+					return false;
+			}
+			catch (ClientProtocolException e)
+			{
+				Log.i("Versión",">>>>>>>>>>Error protocolo");
 				return false;
 			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
+			catch (IOException e)
+			{
+				Log.i("Versión",">>>>>>>>>>Error IO");
+				return false;
 			}
-
-			// TODO: register the new account here.
+			
 			return true;
 		}
 
@@ -228,7 +258,8 @@ public class MainActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
-				//finish();
+				Intent nextAct = new Intent(getBaseContext(),GMapActivity.class);
+				startActivity(nextAct);
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
