@@ -67,20 +67,21 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.login_view);
+		setContentView(com.nuts.mayanparade.R.layout.login_view);
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-		mEmailView = (EditText) findViewById(R.id.email);
+		mEmailView = (EditText) findViewById(com.nuts.mayanparade.R.id.email);
 		mEmailView.setText(mEmail);
 
-		mPasswordView = (EditText) findViewById(R.id.password);
+		mPasswordView = (EditText) findViewById(com.nuts.mayanparade.R.id.password);
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView textView, int id,
 							KeyEvent keyEvent) {
-						if (id == R.id.login || id == EditorInfo.IME_NULL) {
+						//if (id == R.id.login || id == EditorInfo.IME_NULL) {
+						if (id == EditorInfo.IME_NULL) {
 							attemptLogin();
 							return true;
 						}
@@ -88,11 +89,11 @@ public class MainActivity extends Activity {
 					}
 				});
 
-		mLoginFormView = findViewById(R.id.login_form);
-		mLoginStatusView = findViewById(R.id.login_status);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+		mLoginFormView = findViewById(com.nuts.mayanparade.R.id.login_form);
+		mLoginStatusView = findViewById(com.nuts.mayanparade.R.id.login_status);
+		mLoginStatusMessageView = (TextView) findViewById(com.nuts.mayanparade.R.id.login_status_message);
 
-		findViewById(R.id.sign_in_button).setOnClickListener(
+		findViewById(com.nuts.mayanparade.R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
@@ -104,7 +105,7 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login_view, menu);
+		getMenuInflater().inflate(com.nuts.mayanparade.R.menu.login_view, menu);
 		return true;
 	}
 
@@ -131,22 +132,22 @@ public class MainActivity extends Activity {
 
 		// Check for a valid password.
 		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
+			mPasswordView.setError(getString(com.nuts.mayanparade.R.string.error_field_required));
 			focusView = mPasswordView;
 			cancel = true;
 		} else if (mPassword.length() < 2) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
+			mPasswordView.setError(getString(com.nuts.mayanparade.R.string.error_invalid_password));
 			focusView = mPasswordView;
 			cancel = true;
 		}
 
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
+			mEmailView.setError(getString(com.nuts.mayanparade.R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
 		} else if (!mEmail.contains("@") && (!mEmail.contains("."))) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
+			mEmailView.setError(getString(com.nuts.mayanparade.R.string.error_invalid_email));
 			focusView = mEmailView;
 			cancel = true;
 		}
@@ -158,7 +159,7 @@ public class MainActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			mLoginStatusMessageView.setText(com.nuts.mayanparade.R.string.login_progress_signing_in);
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
@@ -220,8 +221,8 @@ public class MainActivity extends Activity {
 			try
 			{
 				List<NameValuePair> data = new ArrayList<NameValuePair>(2);
-				EditText etUser = (EditText)findViewById(R.id.email);
-				EditText etPass = (EditText)findViewById(R.id.password);
+				EditText etUser = (EditText)findViewById(com.nuts.mayanparade.R.id.email);
+				EditText etPass = (EditText)findViewById(com.nuts.mayanparade.R.id.password);
 				data.add(new BasicNameValuePair("username", etUser.getText().toString()));
 				data.add(new BasicNameValuePair("password", etPass.getText().toString()));
 				webPost.setEntity(new UrlEncodedFormEntity(data));
@@ -263,7 +264,7 @@ public class MainActivity extends Activity {
 				startActivity(nextAct);
 			} else {
 				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
+						.setError(getString(com.nuts.mayanparade.R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
 			}
 		}
