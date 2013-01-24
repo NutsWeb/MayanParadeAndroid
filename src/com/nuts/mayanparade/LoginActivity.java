@@ -17,6 +17,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.R;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -40,7 +41,7 @@ import android.widget.TextView;
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class MainActivity extends Activity {
+public class LoginActivity extends Activity {
 	/**
 	 * The default email to populate the email field with.
 	 */
