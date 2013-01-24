@@ -3,5 +3,6 @@
     <string name="app_name">MayanParade</string>
 
     <string name="desc">Image</string>
+    <string name="fb_id"/>
 
 </resources>
