@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView1"
-            android:layout_marginTop="29dp"
+            android:layout_marginTop="50dp"
             android:layout_toLeftOf="@+id/imageView1"
             android:background="@drawable/btn_group2" />
 
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="50dp"
             android:contentDescription="@string/desc"
             android:src="@drawable/grupo1_logomp" />
 
@@ -72,6 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/button1"
             android:layout_alignBottom="@+id/button1"
+            android:layout_marginTop="40dp"
             android:layout_toRightOf="@+id/imageView1"
             android:background="@drawable/btn_group3" />
 
@@ -126,7 +127,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="83dp"
             android:background="@drawable/btn_aceptar" />
-
     </RelativeLayout>
 
     <RelativeLayout

@@ -111,20 +111,19 @@
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/button1"
             android:layout_below="@+id/button1"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="89dp"
+            android:layout_marginTop="29dp"
+            android:layout_toLeftOf="@+id/button2"
             android:contentDescription="@string/desc"
             android:src="@drawable/correo_gris" />
 
         <Button
-            android:id="@+id/sign_in_button"
+            android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/password"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="83dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/btn_aceptar" />
 
     </RelativeLayout>
