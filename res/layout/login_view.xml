@@ -92,6 +92,7 @@
                 android:layout_marginRight="100dp"
                 android:layout_weight="1"
                 android:background="@drawable/btn_group3" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -148,6 +149,7 @@
             android:layout_width="235dp"
             android:layout_height="28dp"
             android:background="@drawable/textura_box"
+            android:contentDescription="@string/desc"
             android:ems="10"
             android:inputType="textEmailAddress" >
 
@@ -176,6 +178,7 @@
              android:layout_width="235dp"
              android:layout_height="28dp"
              android:background="@drawable/textura_box"
+             android:contentDescription="@string/desc"
              android:ems="10"
              android:inputType="textPassword" >
 
