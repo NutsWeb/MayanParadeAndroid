@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/map_controller"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="right" >
@@ -11,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:apiKey="Your Maps API Key goes here"
+        android:apiKey="AIzaSyDGqnTO6jCewIK07pzCcxaS00TlJYqpnuA"
         android:clickable="true" >
     </com.google.android.maps.MapView>
 
