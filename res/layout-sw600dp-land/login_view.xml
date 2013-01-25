@@ -78,23 +78,15 @@
             android:layout_toRightOf="@+id/imageView1"
             android:background="@drawable/login_view_btn_crear_cuenta" />
 
-        <ImageView
-            android:id="@+id/ImageView01"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/imageView3"
-            android:layout_below="@+id/imageView3"
-            android:background="@drawable/login_view_correo_crear_cuenta"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/login_view_pass_crear_cuenta" />
-
         <EditText
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/ImageView01"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="59dp"
             android:layout_toRightOf="@+id/ImageView01"
-            android:background="@drawable/login_view_txt"
+            android:background="@drawable/app_textfield"
             android:ems="10"
             android:inputType="textEmailAddress" >
 
@@ -107,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/email"
             android:layout_alignTop="@+id/ImageView01"
-            android:background="@drawable/login_view_txt"
+            android:background="@drawable/app_textfield"
             android:ems="10"
             android:inputType="textPassword" />
 
@@ -118,7 +110,7 @@
             android:layout_alignRight="@+id/button1"
             android:layout_below="@+id/button1"
             android:layout_marginRight="24dp"
-            android:layout_marginTop="89dp"
+            android:layout_marginTop="59dp"
             android:background="@drawable/login_view_correo_crear_cuenta"
             android:contentDescription="@string/desc"
             android:src="@drawable/login_view_correo_crear_cuenta" />
@@ -131,6 +123,17 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="83dp"
             android:background="@drawable/login_view_btn_aceptar" />
+
+        <ImageView
+            android:id="@+id/ImageView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView3"
+            android:layout_alignRight="@+id/sign_in_button"
+            android:background="@drawable/login_view_correo_crear_cuenta"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_correo" />
+
     </RelativeLayout>
 
 </merge>

@@ -37,7 +37,7 @@
         android:id="@+id/login_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="top"
+        android:gravity="bottom"
         android:visibility="visible" >
 
         <ImageView
@@ -49,27 +49,7 @@
             android:src="@drawable/login_view_bg" />
 
         <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView1"
-            android:layout_marginTop="50dp"
-            android:layout_toLeftOf="@+id/imageView1"
-            android:background="@drawable/login_view_btn_fb" />
-
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/login_view_logo"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/login_view_logo" />
-
-        <Button
-            android:id="@+id/button3"
+            android:id="@+id/create_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/button1"
@@ -131,6 +111,27 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="83dp"
             android:background="@drawable/login_view_btn_aceptar" />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/login_view_logo"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_logo" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView1"
+            android:layout_marginTop="63dp"
+            android:layout_toLeftOf="@+id/imageView1"
+            android:background="@drawable/login_view_btn_fb" />
+
     </RelativeLayout>
 
 </merge>
