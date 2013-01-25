@@ -84,9 +84,9 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/imageView3"
             android:layout_below="@+id/imageView3"
-            android:background="@drawable/login_view_correo_crear_cuenta"
+            android:background="@drawable/login_view_pass"
             android:contentDescription="@string/desc"
-            android:src="@drawable/login_view_pass_crear_cuenta" />
+            android:src="@drawable/login_view_pass" />
 
         <EditText
             android:id="@+id/email"
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/ImageView01"
             android:layout_toRightOf="@+id/ImageView01"
-            android:background="@drawable/login_view_txt"
+            android:background="@drawable/app_textfield"
             android:ems="10"
             android:inputType="textEmailAddress" >
 
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/email"
             android:layout_alignTop="@+id/ImageView01"
-            android:background="@drawable/login_view_txt"
+            android:background="@drawable/app_textfield"
             android:ems="10"
             android:inputType="textPassword" />
 
@@ -119,9 +119,9 @@
             android:layout_below="@+id/button1"
             android:layout_marginRight="24dp"
             android:layout_marginTop="89dp"
-            android:background="@drawable/login_view_correo_crear_cuenta"
+            android:background="@drawable/login_view_correo"
             android:contentDescription="@string/desc"
-            android:src="@drawable/login_view_correo_crear_cuenta" />
+            android:src="@drawable/login_view_correo" />
 
         <Button
             android:id="@+id/sign_in_button"
@@ -130,7 +130,7 @@
             android:layout_below="@+id/password"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="83dp"
-            android:background="@drawable/login_view_btn_aceptar" />
+            android:background="@drawable/app_btn_aceptar" />
     </RelativeLayout>
 
 </merge>
