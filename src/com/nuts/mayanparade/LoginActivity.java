@@ -106,13 +106,13 @@ public class LoginActivity extends Activity {
 						showCreateAccount();
 					}
 				});
-		findViewById(R.id.add_usr_btn).setOnClickListener(
+		/*findViewById(R.id.add_usr_btn).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						addUserDB();
 					}
-				});
+				});*/
 	}
 
 	@Override
@@ -184,8 +184,8 @@ public class LoginActivity extends Activity {
 	{
 		RelativeLayout logForm = (RelativeLayout)findViewById(R.id.login_form);
 		logForm.setVisibility(View.GONE);
-		RelativeLayout layAdd = (RelativeLayout)findViewById(R.id.add_usr_layer);
-		layAdd.setVisibility(View.VISIBLE);
+		/*RelativeLayout layAdd = (RelativeLayout)findViewById(R.id.add_usr_layer);
+		layAdd.setVisibility(View.VISIBLE);*/
 	}
 	
 	public void addUserDB()
@@ -224,8 +224,8 @@ public class LoginActivity extends Activity {
 			Log.i("Versión","E>>>>>>>>>>Error IO");
 		}
 		
-		RelativeLayout layAdd = (RelativeLayout)findViewById(R.id.add_usr_layer);
-		layAdd.setVisibility(View.GONE);
+		/*RelativeLayout layAdd = (RelativeLayout)findViewById(R.id.add_usr_layer);
+		layAdd.setVisibility(View.GONE);*/
 		RelativeLayout logForm = (RelativeLayout)findViewById(R.id.login_form);
 		logForm.setVisibility(View.VISIBLE);
 	}
