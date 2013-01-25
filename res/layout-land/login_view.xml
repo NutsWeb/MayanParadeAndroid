@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="top"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <ImageView
             android:id="@+id/imageView2"
@@ -117,8 +117,8 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/button1"
             android:layout_below="@+id/button1"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="89dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/login_view_correo"
             android:contentDescription="@string/desc"
             android:src="@drawable/login_view_correo" />
@@ -129,8 +129,200 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/password"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="83dp"
+            android:layout_marginTop="60dp"
             android:background="@drawable/app_btn_aceptar" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_bg" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="5dp"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_logo" />
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="1000dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView6"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="218dp"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_titleline" />
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/imageView7"
+            android:layout_below="@+id/imageView7"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_name" />
+
+        <ImageView
+            android:id="@+id/ImageView02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView8"
+            android:layout_toLeftOf="@+id/editText1"
+            android:background="@drawable/login_view_cc_lastname"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_lastname" />
+
+        <EditText
+            android:id="@+id/EditText01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ImageView02"
+            android:layout_toRightOf="@+id/ImageView02"
+            android:background="@drawable/app_textfield"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
+        <ImageView
+            android:id="@+id/ImageView03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ImageView02"
+            android:layout_below="@+id/ImageView02"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_correo" />
+
+        <EditText
+            android:id="@+id/EditText02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ImageView03"
+            android:layout_toRightOf="@+id/ImageView03"
+            android:background="@drawable/app_textfield"
+            android:ems="10"
+            android:inputType="textEmailAddress" />
+
+        <ImageView
+            android:id="@+id/ImageView04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ImageView03"
+            android:layout_toLeftOf="@+id/EditText02"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_pass" />
+
+        <EditText
+            android:id="@+id/EditText03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ImageView04"
+            android:layout_alignRight="@+id/EditText02"
+            android:layout_toRightOf="@+id/ImageView04"
+            android:background="@drawable/app_textfield"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+        <ImageView
+            android:id="@+id/ImageView05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ImageView04"
+            android:layout_toLeftOf="@+id/EditText03"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_pass2" />
+
+        <EditText
+            android:id="@+id/EditText04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ImageView05"
+            android:layout_alignLeft="@+id/EditText03"
+            android:layout_alignRight="@+id/EditText03"
+            android:background="@drawable/app_textfield"
+            android:ems="10"
+            android:inputType="textPassword" />
+
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/ImageView05"
+            android:layout_below="@+id/ImageView05" />
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/checkBox1"
+            android:layout_marginBottom="23dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/checkBox1"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_lb_aceptarterminos" />
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/EditText04"
+            android:layout_alignTop="@+id/imageView9"
+            android:background="@drawable/login_view_cc_lb_verterminos"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_lb_verterminos" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/checkBox1"
+            android:layout_below="@+id/checkBox1"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/app_btn_aceptar" />
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/button2"
+            android:layout_alignBottom="@+id/button2"
+            android:layout_alignRight="@+id/imageButton1"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/app_btn_cancel" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView5"
+            android:layout_alignRight="@+id/editText1"
+            android:contentDescription="@string/desc"
+            android:src="@drawable/login_view_cc_lb_title" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imageView8"
+            android:layout_toRightOf="@+id/imageView8"
+            android:background="@drawable/app_textfield"
+            android:ems="10"
+            android:inputType="textPersonName" />
+
     </RelativeLayout>
 
 </merge>
