@@ -44,17 +44,18 @@
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@drawable/login_view_bg"
             android:contentDescription="@string/desc"
-            android:src="@drawable/grupo1_bg" />
+            android:src="@drawable/login_view_bg" />
 
         <Button
             android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView1"
-            android:layout_marginTop="29dp"
+            android:layout_marginTop="50dp"
             android:layout_toLeftOf="@+id/imageView1"
-            android:background="@drawable/btn_group2" />
+            android:background="@drawable/login_view_btn_fb" />
 
         <ImageView
             android:id="@+id/imageView1"
@@ -62,9 +63,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/login_view_logo"
             android:contentDescription="@string/desc"
-            android:src="@drawable/grupo1_logomp" />
+            android:src="@drawable/login_view_logo" />
 
         <Button
             android:id="@+id/button3"
@@ -72,8 +74,9 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/button1"
             android:layout_alignBottom="@+id/button1"
+            android:layout_marginTop="40dp"
             android:layout_toRightOf="@+id/imageView1"
-            android:background="@drawable/btn_group3" />
+            android:background="@drawable/login_view_btn_crear_cuenta" />
 
         <ImageView
             android:id="@+id/ImageView01"
@@ -81,8 +84,9 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/imageView3"
             android:layout_below="@+id/imageView3"
+            android:background="@drawable/login_view_correo_crear_cuenta"
             android:contentDescription="@string/desc"
-            android:src="@drawable/pass_gris" />
+            android:src="@drawable/login_view_pass_crear_cuenta" />
 
         <EditText
             android:id="@+id/email"
@@ -90,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/ImageView01"
             android:layout_toRightOf="@+id/ImageView01"
-            android:background="@drawable/textura_box"
+            android:background="@drawable/login_view_txt"
             android:ems="10"
             android:inputType="textEmailAddress" >
 
@@ -103,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/email"
             android:layout_alignTop="@+id/ImageView01"
-            android:background="@drawable/textura_box"
+            android:background="@drawable/login_view_txt"
             android:ems="10"
             android:inputType="textPassword" />
 
@@ -115,8 +119,9 @@
             android:layout_below="@+id/button1"
             android:layout_marginRight="24dp"
             android:layout_marginTop="89dp"
+            android:background="@drawable/login_view_correo_crear_cuenta"
             android:contentDescription="@string/desc"
-            android:src="@drawable/correo_gris" />
+            android:src="@drawable/login_view_correo_crear_cuenta" />
 
         <Button
             android:id="@+id/sign_in_button"
@@ -125,60 +130,7 @@
             android:layout_below="@+id/password"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="83dp"
-            android:background="@drawable/btn_aceptar" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/bg" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView5"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="148dp"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/cc" />
-
-        <CheckBox
-            android:id="@+id/checkBox1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="88dp"
-            android:layout_toLeftOf="@+id/imageView6" />
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/checkBox1"
-            android:layout_centerVertical="true"
-            android:src="@drawable/nombre_gris" />
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/logomp" />
-
+            android:background="@drawable/login_view_btn_aceptar" />
     </RelativeLayout>
 
 </merge>
