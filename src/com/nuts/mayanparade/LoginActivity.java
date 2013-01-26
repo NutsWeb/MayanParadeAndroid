@@ -42,7 +42,8 @@ import com.facebook.model.*;
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity
+{
 	/**
 	 * The default email to populate the email field with.
 	 */
@@ -60,9 +61,9 @@ public class LoginActivity extends Activity {
 	// UI references.
 	private EditText mEmailView;
 	private EditText mPasswordView;
-	private View mLoginFormView;
+	/*private View mLoginFormView;
 	private View mLoginStatusView;
-	private TextView mLoginStatusMessageView;
+	private TextView mLoginStatusMessageView;*/
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +73,11 @@ public class LoginActivity extends Activity {
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-		mEmailView = (EditText) findViewById(R.id.email);
+		mEmailView = (EditText) findViewById(R.id.login_view_txt_email);
 		mEmailView.setText(mEmail);
 
 		Log.i("Ver","Agregando el listener de campos");
-		mPasswordView = (EditText) findViewById(R.id.password);
+		mPasswordView = (EditText) findViewById(R.id.login_view_txt_pass);
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
@@ -90,12 +91,12 @@ public class LoginActivity extends Activity {
 					}
 				});
 
-		mLoginFormView = findViewById(R.id.login_form);
-		mLoginStatusView = findViewById(R.id.login_status);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-		
+		//mLoginFormView = findViewById(R.id.login);
+		//mLoginStatusView = findViewById(R.id.login_status);
+		//mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+
 		//Login listener
-		findViewById(R.id.sign_in_button).setOnClickListener(
+		findViewById(R.id.login_view_btn_acept).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
@@ -103,23 +104,16 @@ public class LoginActivity extends Activity {
 					}
 				});
 		//Add user listeners
-		findViewById(R.id.button3).setOnClickListener(
+		findViewById(R.id.login_view_btn_cc).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						showCreateAccount();
 					}
 				});
-		/*findViewById(R.id.add_usr_btn).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						addUserDB();
-					}
-				});*/
-		
+
 		//Facebook Listeners
-		findViewById(R.id.facebookLoginBtn).setOnClickListener(
+		findViewById(R.id.login_view_btn_fb).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -191,7 +185,7 @@ public class LoginActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			//mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
@@ -201,52 +195,9 @@ public class LoginActivity extends Activity {
 	//Add user callbacks
 	public void showCreateAccount()
 	{
-		RelativeLayout logForm = (RelativeLayout)findViewById(R.id.login_form);
-		logForm.setVisibility(View.GONE);
-		/*RelativeLayout layAdd = (RelativeLayout)findViewById(R.id.add_usr_layer);
-		layAdd.setVisibility(View.VISIBLE);*/
-	}
-	
-	public void addUserDB()
-	{
-		HttpClient webClient = new DefaultHttpClient();
-		HttpPost webPost = new HttpPost("http://www.nuts.mx/pakales/home/addUser");
-		
-		try
-		{
-			List<NameValuePair> data = new ArrayList<NameValuePair>(5);
-			data.add(new BasicNameValuePair("name", "dummy2"));
-			data.add(new BasicNameValuePair("lastname", "dumm2"));
-			data.add(new BasicNameValuePair("email", "dummy@test.com"));
-			data.add(new BasicNameValuePair("password", "abcd2"));
-			data.add(new BasicNameValuePair("type", "site"));
-			webPost.setEntity(new UrlEncodedFormEntity(data));
-			
-			HttpResponse response = webClient.execute(webPost);
-			InputStream istrm = response.getEntity().getContent();
-			InputStreamReader srdr = new InputStreamReader(istrm);
-			BufferedReader brdr = new BufferedReader(srdr);
-			StringBuilder sbuild = new StringBuilder();
-			String sdata = null;
-			
-			while((sdata = brdr.readLine()) != null)
-				sbuild.append(sdata+";");
-			
-			Log.i("Versión","AU>>>>>>>>>"+sbuild.toString());
-		}
-		catch(ClientProtocolException e)
-		{
-			Log.i("Versión","E>>>>>>>>>>Error protocolo");
-		}
-		catch(IOException e)
-		{
-			Log.i("Versión","E>>>>>>>>>>Error IO");
-		}
-		
-		/*RelativeLayout layAdd = (RelativeLayout)findViewById(R.id.add_usr_layer);
-		layAdd.setVisibility(View.GONE);*/
-		RelativeLayout logForm = (RelativeLayout)findViewById(R.id.login_form);
-		logForm.setVisibility(View.VISIBLE);
+		Intent nextAct = new Intent(getBaseContext(),RegisterUserActivity.class);
+		finish();
+		startActivity(nextAct);
 	}
 	
 	/**
@@ -255,7 +206,6 @@ public class LoginActivity extends Activity {
 	public void loginFacebook()
 	{
 		Log.i("Ver",">>>>>>>>>FBLogin");
-		@SuppressWarnings("deprecation")
 		Facebook fb_ptr = new Facebook("260848030691990");
 	}
 
@@ -267,7 +217,7 @@ public class LoginActivity extends Activity {
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+		/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
 
@@ -297,7 +247,7 @@ public class LoginActivity extends Activity {
 			// and hide the relevant UI components.
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
 			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-		}
+		}*/
 	}
 
 	/**
@@ -314,8 +264,8 @@ public class LoginActivity extends Activity {
 			try
 			{
 				List<NameValuePair> data = new ArrayList<NameValuePair>(2);
-				EditText etUser = (EditText)findViewById(R.id.email);
-				EditText etPass = (EditText)findViewById(R.id.password);
+				EditText etUser = (EditText)findViewById(R.id.login_view_txt_email);
+				EditText etPass = (EditText)findViewById(R.id.login_view_txt_pass);
 				data.add(new BasicNameValuePair("username", etUser.getText().toString()));
 				data.add(new BasicNameValuePair("password", etPass.getText().toString()));
 				webPost.setEntity(new UrlEncodedFormEntity(data));
@@ -326,7 +276,7 @@ public class LoginActivity extends Activity {
 				BufferedReader brdr = new BufferedReader(srdr);
 				StringBuilder sbuild = new StringBuilder();
 				String sdata = null;
-				
+
 				while((sdata = brdr.readLine()) != null)
 					sbuild.append(sdata+"\n");
 				

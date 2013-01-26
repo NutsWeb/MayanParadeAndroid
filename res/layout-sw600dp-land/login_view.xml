@@ -80,7 +80,7 @@
             android:src="@drawable/login_view_pass" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/login_view_crearcuenta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/imageView3"
