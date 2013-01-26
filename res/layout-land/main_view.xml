@@ -1,70 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="319dp" >
+    android:layout_height="319dp"
+    android:background="@drawable/login_view_bg" >
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/main_view_btn_friends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="80dp"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_marginRight="80dp"
+            android:background="@drawable/main_view_btn_amigos" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/main_view_btn_settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="80dp"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:background="@drawable/main_view_btn_options" />
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="80dp"
-            android:layout_weight="1"
-            android:text="Button" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/login_view_cc_titleline" />
+
+    <ImageView
+        android:id="@+id/main_view_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/main_view_btn_title" />
+
     <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="160dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" >
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="52dp" >
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/main_view_btn_visor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_marginRight="80dp"
+            android:background="@drawable/main_view_btn_visor" />
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/main_view_btn_gallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_weight="1"
-            android:text="Button" />
+            android:layout_marginRight="80dp"
+            android:background="@drawable/main_view_btn_galeria" />
+
+        <Button
+            android:id="@+id/main_view_btn_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/main_view_btn_ruta" />
     </LinearLayout>
 
 </RelativeLayout>
