@@ -34,6 +34,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.*;
+import com.facebook.android.Facebook;
+import com.facebook.model.*;
+
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
@@ -71,13 +75,13 @@ public class LoginActivity extends Activity {
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 
+		Log.i("Ver","Agregando el listener de campos");
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView textView, int id,
 							KeyEvent keyEvent) {
-						//if (id == R.id.login || id == EditorInfo.IME_NULL) {
 						if (id == EditorInfo.IME_NULL) {
 							attemptLogin();
 							return true;
@@ -99,7 +103,7 @@ public class LoginActivity extends Activity {
 					}
 				});
 		//Add user listeners
-		findViewById(R.id.button1).setOnClickListener(
+		findViewById(R.id.button3).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -113,6 +117,15 @@ public class LoginActivity extends Activity {
 						addUserDB();
 					}
 				});*/
+		
+		//Facebook Listeners
+		findViewById(R.id.facebookLoginBtn).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						loginFacebook();
+					}
+				});
 	}
 
 	@Override
@@ -120,6 +133,12 @@ public class LoginActivity extends Activity {
 		super.onCreateOptionsMenu(menu);
 		getMenuInflater().inflate(R.menu.login_view, menu);
 		return true;
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	  super.onActivityResult(requestCode, resultCode, data);
+	  Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 	}
 
 	/**
@@ -228,6 +247,16 @@ public class LoginActivity extends Activity {
 		layAdd.setVisibility(View.GONE);*/
 		RelativeLayout logForm = (RelativeLayout)findViewById(R.id.login_form);
 		logForm.setVisibility(View.VISIBLE);
+	}
+	
+	/**
+	 * Facebook functions
+	 */
+	public void loginFacebook()
+	{
+		Log.i("Ver",">>>>>>>>>FBLogin");
+		@SuppressWarnings("deprecation")
+		Facebook fb_ptr = new Facebook("260848030691990");
 	}
 
 	/**
