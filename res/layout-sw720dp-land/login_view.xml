@@ -1,136 +1,102 @@
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
     tools:context=".MainActivity" >
 
-    <!-- Login progress -->
-
-    <LinearLayout
-        android:id="@+id/login_status"
+    <ImageView
+        android:id="@+id/login_view_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone" >
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp"
+        android:src="@drawable/login_view_logo" />
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/login_status_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/login_progress_signing_in"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
-
-    <!-- Login form -->
-
-    <RelativeLayout
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top"
-        android:visibility="visible" >
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/login_view_bg"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/login_view_bg" />
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_view_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
+            android:id="@+id/login_view_btn_fb"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView1"
-            android:layout_marginTop="50dp"
-            android:layout_toLeftOf="@+id/imageView1"
+            android:layout_marginRight="50dp"
+            android:layout_weight="1"
             android:background="@drawable/login_view_btn_fb" />
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/login_view_logo"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/login_view_logo" />
-
         <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
+            android:id="@+id/login_view_btn_cc"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/button1"
-            android:layout_alignBottom="@+id/button1"
-            android:layout_marginTop="40dp"
-            android:layout_toRightOf="@+id/imageView1"
+            android:layout_marginLeft="50dp"
+            android:layout_weight="1"
             android:background="@drawable/login_view_btn_crear_cuenta" />
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/ImageView01"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/login_view_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_view_correo" />
+
+            <EditText
+                android:id="@+id/login_view_txt_email"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_textfield"
+                android:inputType="textEmailAddress" >
+				<requestFocus />
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/imageView3"
-            android:layout_below="@+id/imageView3"
-            android:background="@drawable/login_view_pass"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/login_view_pass" />
+            android:layout_height="wrap_content" >
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/ImageView01"
-            android:layout_toRightOf="@+id/ImageView01"
-            android:background="@drawable/app_textfield"
-            android:ems="10"
-            android:inputType="textEmailAddress" >
+            <ImageView
+                android:id="@+id/login_view_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/login_view_pass" />
 
-            <requestFocus />
-        </EditText>
+            <EditText
+                android:id="@+id/login_view_txt_pass"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_textfield"
+                android:inputType="textPassword" >
+                <requestFocus />
+            </EditText>
+        </LinearLayout>
+    </LinearLayout>
 
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/email"
-            android:layout_alignTop="@+id/ImageView01"
-            android:background="@drawable/app_textfield"
-            android:ems="10"
-            android:inputType="textPassword" />
+    <Button
+        android:id="@+id/login_view_btn_acept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/app_btn_aceptar" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/button1"
-            android:layout_below="@+id/button1"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="89dp"
-            android:background="@drawable/login_view_correo"
-            android:contentDescription="@string/desc"
-            android:src="@drawable/login_view_correo" />
-
-        <Button
-            android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/password"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="83dp"
-            android:background="@drawable/app_btn_aceptar" />
-    </RelativeLayout>
-
-</merge>
+</RelativeLayout>
