@@ -52,6 +52,7 @@ public class GalleryActivity extends Activity
 		private Context myContext;
 		// Put some images to project-folder: /res/drawable/
 		// format: jpg, gif, png, bmp, ...
+		
 		private int[] myImageIds = { R.drawable.image1, R.drawable.image2,
 				       R.drawable.image3, R.drawable.mbl1 };
 
