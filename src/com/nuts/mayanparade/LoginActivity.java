@@ -34,14 +34,15 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.*;
-import com.facebook.android.Facebook;
-import com.facebook.model.*;
+//import com.facebook.*;
+//import com.facebook.android.Facebook;
+//import com.facebook.model.*;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
+
 public class LoginActivity extends Activity
 {
 	/**
@@ -52,7 +53,7 @@ public class LoginActivity extends Activity
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
-	private UserLoginTask mAuthTask = null;
+	//private UserLoginTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -78,7 +79,7 @@ public class LoginActivity extends Activity
 
 		Log.i("Ver","Agregando el listener de campos");
 		mPasswordView = (EditText) findViewById(R.id.login_view_txt_pass);
-		mPasswordView
+		/*mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView textView, int id,
@@ -89,7 +90,7 @@ public class LoginActivity extends Activity
 						}
 						return false;
 					}
-				});
+				});*/
 
 		//mLoginFormView = findViewById(R.id.login);
 		//mLoginStatusView = findViewById(R.id.login_status);
@@ -132,7 +133,7 @@ public class LoginActivity extends Activity
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	  super.onActivityResult(requestCode, resultCode, data);
-	  Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+	  //Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 	}
 
 	/**
@@ -141,9 +142,9 @@ public class LoginActivity extends Activity
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		if (mAuthTask != null) {
+		/*if (mAuthTask != null) {
 			return;
-		}
+		}*/
 
 		// Reset errors.
 		mEmailView.setError(null);
@@ -187,8 +188,8 @@ public class LoginActivity extends Activity
 			// perform the user login attempt.
 			//mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
+			//mAuthTask = new UserLoginTask();
+			//mAuthTask.execute((Void) null);
 		}
 	}
 
@@ -206,7 +207,7 @@ public class LoginActivity extends Activity
 	public void loginFacebook()
 	{
 		Log.i("Ver",">>>>>>>>>FBLogin");
-		Facebook fb_ptr = new Facebook("260848030691990");
+		//Facebook fb_ptr = new Facebook("260848030691990");
 	}
 
 	/**
@@ -254,7 +255,7 @@ public class LoginActivity extends Activity
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
 	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+	/*public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 
@@ -317,5 +318,5 @@ public class LoginActivity extends Activity
 			mAuthTask = null;
 			showProgress(false);
 		}
-	}
+	}*/
 }
