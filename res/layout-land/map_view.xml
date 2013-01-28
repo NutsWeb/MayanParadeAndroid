@@ -5,11 +5,19 @@
     android:layout_height="match_parent"
     android:gravity="right" >
 
- <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/map"
-  android:layout_width="300dp"
-  android:layout_height="match_parent"
-  class="com.google.android.gms.maps.MapFragment"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="79dp"
+        android:gravity="left" >
 
+    </RelativeLayout>
+
+ <fragment
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/map"
+     android:layout_width="300dp"
+     android:layout_height="match_parent"
+     class="com.google.android.gms.maps.MapFragment" />
  
 </RelativeLayout>
