@@ -275,7 +275,6 @@ public class LoginActivity extends Activity
 				InputStream resStream = response.getEntity().getContent();
 				InputStreamReader srdr = new InputStreamReader(resStream);
 				BufferedReader brdr = new BufferedReader(srdr);
-				StringBuilder sbuild = new StringBuilder();
 				String sdata = null;
 
 				while((sdata = brdr.readLine()) != null)

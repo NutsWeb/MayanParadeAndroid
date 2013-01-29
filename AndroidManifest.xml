@@ -34,7 +34,7 @@
             android:windowSoftInputMode="adjustResize|stateVisible"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape"
-            android:noHistory="true" >
+            android:noHistory="true"  >
             <intent-filter>
 			    <action android:name="android.intent.action.MAIN" />
 			    <category android:name="android.intent.category.LAUNCHER" />

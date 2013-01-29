@@ -5,46 +5,14 @@
     android:gravity="top"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/mySelection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-
-    <Gallery
-        android:id="@+id/myGallery"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="70dp"
-        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-
-    <Button
-        android:id="@+id/facebookShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/mySelection"
-        android:layout_marginLeft="35dp"
-        android:text="Facebook" />
-
-    <Button
-        android:id="@+id/twitterShare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/facebookShare"
-        android:layout_marginLeft="35dp"
-        android:layout_toRightOf="@+id/facebookShare"
-        android:text="Twitter" />
-
     <Button
         android:id="@+id/emailSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/twitterShare"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="35dp"
-        android:layout_toRightOf="@+id/twitterShare"
-        android:text="Email" />
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_send" />
 
     <Button
         android:id="@+id/Save"
@@ -54,7 +22,7 @@
         android:layout_alignBottom="@+id/emailSend"
         android:layout_marginLeft="35dp"
         android:layout_toRightOf="@+id/emailSend"
-        android:text="Save" />
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_save" />
 
     <Button
         android:id="@+id/delete"
@@ -64,6 +32,59 @@
         android:layout_alignBottom="@+id/Save"
         android:layout_marginLeft="35dp"
         android:layout_toRightOf="@+id/Save"
-        android:text="Delete" />
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_delete" />
+
+    <Gallery
+        android:id="@+id/myGallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="270dp"
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+    <ImageView
+        android:id="@+id/myFullScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/image1" />
+
+    <Button
+        android:id="@+id/twitterShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/facebookShare"
+        android:layout_toLeftOf="@+id/emailSend"
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_tt" />
+
+    <Button
+        android:id="@+id/facebookShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="26dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/twitterShare"
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_fb" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/galeriasinglefoto_gallery_view_btn_home" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/galeriasinglefoto_gallery_view_btn_back" />
 
 </RelativeLayout>

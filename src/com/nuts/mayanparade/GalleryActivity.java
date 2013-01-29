@@ -14,35 +14,35 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 public class GalleryActivity extends Activity 
 {
-	TextView mySelection;
+	ImageView myFullScreen;
 	Gallery myGallery;
+	ImageAdapter IAdapter;
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
 		setContentView(R.layout.gallery_view);
-		mySelection = (TextView) findViewById(R.id.mySelection);		
+		myFullScreen = (ImageView) findViewById(R.id.myFullScreen);
 		
 		// Bind the gallery defined in the main.xml
 		// Apply a new (customized) ImageAdapter to it.
 
 		myGallery = (Gallery) findViewById(R.id.myGallery);
 
-		myGallery.setAdapter(new ImageAdapter(this));
-		
+		IAdapter = new ImageAdapter(this);
+		myGallery.setAdapter(IAdapter);
+
 		myGallery.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int position, long id) {
-				mySelection.setText(" selected option: " + position );
-				
+				myFullScreen.setImageResource(IAdapter.getImageFull(position));
+	
 			}
 
 			public void onNothingSelected(AdapterView<?> parent) {
-				mySelection.setText("Nothing selected");
-				
-			}
 
+			}
 
 		});
 	}// onCreate
@@ -52,9 +52,9 @@ public class GalleryActivity extends Activity
 		private Context myContext;
 		// Put some images to project-folder: /res/drawable/
 		// format: jpg, gif, png, bmp, ...
-		
-		private int[] myImageIds = { R.drawable.image1, R.drawable.image2,
-				       R.drawable.image3, R.drawable.mbl1 };
+
+		private int[] myImageIds = {R.drawable.image1, R.drawable.image2,
+				       R.drawable.image3 ,R.drawable.image3};
 
 		/** Simple Constructor saving the 'parent' context. */
 		public ImageAdapter(Context c) {
@@ -65,6 +65,10 @@ public class GalleryActivity extends Activity
 		// Returns count of images, and individual IDs
 		public int getCount() {
 			return this.myImageIds.length;
+		}
+		
+		public int getImageFull(int position){
+			return this.myImageIds[position];
 		}
 
 		public Object getItem(int position) {
@@ -89,7 +93,7 @@ public class GalleryActivity extends Activity
 			//iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 			//iv.setScaleType(ImageView.ScaleType.FIT_XY);
 			iv.setScaleType(ImageView.ScaleType.FIT_END);
-			
+
 			// Set the Width & Height of the individual images
 			iv.setLayoutParams(new Gallery.LayoutParams(95, 70));
 
