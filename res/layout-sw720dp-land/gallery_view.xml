@@ -1,6 +1,90 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?> 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/emailSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/twitterShare"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="35dp"
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_send" />
+
+    <Button
+        android:id="@+id/Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/emailSend"
+        android:layout_alignBottom="@+id/emailSend"
+        android:layout_marginLeft="35dp"
+        android:layout_toRightOf="@+id/emailSend"
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_save" />
+
+    <Button
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/Save"
+        android:layout_alignBottom="@+id/Save"
+        android:layout_marginLeft="35dp"
+        android:layout_toRightOf="@+id/Save"
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_delete" />
+
+    <Gallery
+        android:id="@+id/myGallery"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="600dp"
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+    <ImageView
+        android:id="@+id/myFullScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="155dp"
+        android:layout_marginLeft="155dp"
+        android:layout_marginRight="155dp"
+        android:layout_marginTop="155dp"
+        android:src="@drawable/image1" />
+
+    <Button
+        android:id="@+id/twitterShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/facebookShare"
+        android:layout_toLeftOf="@+id/emailSend"
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_tt" />
+
+    <Button
+        android:id="@+id/facebookShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="26dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/twitterShare"
+        android:background="@drawable/galeriasinglefoto_gallery_view_single_fb" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/galeriasinglefoto_gallery_view_btn_home" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/galeriasinglefoto_gallery_view_btn_back" />
 
 </RelativeLayout>
