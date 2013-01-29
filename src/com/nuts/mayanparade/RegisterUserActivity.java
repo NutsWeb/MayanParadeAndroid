@@ -92,8 +92,8 @@ public class RegisterUserActivity extends Activity
 	
 	public void showLoginView()
 	{
-		Intent nextAct = new Intent(getBaseContext(),LoginActivity.class);
+		//Intent nextAct = new Intent(getBaseContext(),LoginActivity.class);
 		finish();
-		startActivity(nextAct);
+		//startActivity(nextAct);
 	}
 }

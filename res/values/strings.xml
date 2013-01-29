@@ -1,8 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">MayanParade</string>
-
     <string name="desc">Image</string>
     <string name="fb_id">260848030691990</string>
-
 </resources>

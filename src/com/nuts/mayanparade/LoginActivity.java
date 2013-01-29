@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -21,29 +24,28 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-//import com.facebook.*;
-//import com.facebook.android.Facebook;
-//import com.facebook.model.*;
+import com.facebook.*;
+import com.facebook.widget.LoginButton;
+
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
 
-public class LoginActivity extends Activity
+public class LoginActivity extends Activity 
 {
 	/**
 	 * The default email to populate the email field with.
@@ -62,15 +64,48 @@ public class LoginActivity extends Activity
 	// UI references.
 	private EditText mEmailView;
 	private EditText mPasswordView;
+
+	private UiLifecycleHelper uiHelper;
+
 	/*private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;*/
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		setContentView(R.layout.login_view);
+		
+		//Fb setup
+		uiHelper = new UiLifecycleHelper(this, callback);
+	    uiHelper.onCreate(savedInstanceState);
+	    
+	    SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+	    String access_token = mPrefs.getString("access_token", null);
+
+	    Session session = Session.getActiveSession();
+	    if (session == null) {
+	        session = new Session(getApplicationContext());
+
+	        // Check if there is an existing token to be migrated 
+	        if(access_token != null) {                              
+	            // Clear the token info
+	            SharedPreferences.Editor editor = mPrefs.edit();
+	            editor.putString("access_token", null);
+	            editor.commit();    
+	            // Create an AccessToken object for importing
+	            // just pass in the access token and take the
+	            // defaults on other values
+	            AccessToken accessToken = AccessToken.createFromExistingAccessToken(
+	                                        access_token,
+	                                        null, null, null, null);
+
+	            // statusCallback: Session.StatusCallback implementation
+	            session.open(accessToken, callback);
+	            Session.setActiveSession(session);
+	        }
+	    }
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -114,26 +149,8 @@ public class LoginActivity extends Activity
 				});
 
 		//Facebook Listeners
-		findViewById(R.id.login_view_btn_fb).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						loginFacebook();
-					}
-				});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login_view, menu);
-		return true;
-	}
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	  super.onActivityResult(requestCode, resultCode, data);
-	  //Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+		LoginButton authButton = (LoginButton) findViewById(R.id.login_view_btn_fb);
+		authButton.setReadPermissions(Arrays.asList("email"));
 	}
 
 	/**
@@ -196,20 +213,61 @@ public class LoginActivity extends Activity
 	//Add user callbacks
 	public void showCreateAccount()
 	{
-		Intent nextAct = new Intent(getBaseContext(),RegisterUserActivity.class);
-		finish();
+		Intent nextAct = new Intent(getBaseContext(), RegisterUserActivity.class);
 		startActivity(nextAct);
 	}
 	
 	/**
 	 * Facebook functions
 	 */
-	public void loginFacebook()
-	{
-		Log.i("Ver",">>>>>>>>>FBLogin");
-		//Facebook fb_ptr = new Facebook("260848030691990");
+	private Session.StatusCallback callback = new Session.StatusCallback() {
+	    @Override
+	    public void call(Session session, SessionState state, Exception exception) {
+	        onSessionStateChange(session, state, exception);
+	    }
+	};
+	
+	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+	    if (state.isOpened()) 
+	    {
+	        Log.i("Fb", "Logged in...");
+	        //Fb Login
+	    }
+	    else if (state.isClosed())
+	        Log.i("Fb", "Logged out...");
+	}
+	
+	@Override
+	public void onResume() {
+	    super.onResume();
+	    uiHelper.onResume();
+	}
+	
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    uiHelper.onPause();
 	}
 
+	@Override
+	public void onDestroy() {
+	    super.onDestroy();
+	    uiHelper.onDestroy();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    uiHelper.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+	  super.onActivityResult(requestCode, resultCode, data);
+	  uiHelper.onActivityResult(requestCode, resultCode, data);
+	}
+	
 	/**
 	 * Shows the progress UI and hides the login form.
 	 */
