@@ -5,17 +5,8 @@
     android:background="@drawable/login_view_bg"
     android:gravity="left" >
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/linearLayout1"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/login_view_cc_titleline" />
-
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/crea_view_input_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView1"
@@ -121,56 +112,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp">
-
-        <CheckBox
-            android:id="@+id/crear_view_cb_terms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageView
-            android:id="@+id/crear_view_lb_aceptterms"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/login_view_cc_lb_aceptarterminos" />
-
-        <ImageView
-            android:id="@+id/crear_view_lb_terms"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/login_view_cc_lb_verterminos" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp" >
-
-        <Button
-            android:id="@+id/crear_view_btn_acept"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/app_btn_aceptar" />
-
-        <Button
-            android:id="@+id/crear_view_btn_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/app_btn_cancel" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/crea_view_title_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -192,6 +134,87 @@
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="275dp"
             android:src="@drawable/login_view_cc_lb_title" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/crea_view_terms_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/crea_view_btns_layout"
+        android:layout_below="@+id/crea_view_input_layout"
+        android:layout_marginTop="16dp" >
+
+        <CheckBox
+            android:id="@+id/crear_view_cb_terms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/crear_view_lb_aceptterms"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/login_view_cc_lb_aceptarterminos" />
+
+        <ImageView
+            android:id="@+id/crear_view_lb_terms"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/login_view_cc_lb_verterminos" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/crea_view_title_layout"
+        android:src="@drawable/login_view_cc_titleline" />
+
+    <LinearLayout
+        android:id="@+id/crea_view_btns_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/crea_view_title_layout"
+        android:layout_below="@+id/crea_view_terms_layout"
+        android:layout_marginRight="18dp" >
+
+        <Button
+            android:id="@+id/crear_view_btn_acept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/app_btn_aceptar" />
+
+        <Button
+            android:id="@+id/crear_view_btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/app_btn_cancel" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/crea_view_status_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/crear_register_process" />
+
     </LinearLayout>
 
 </RelativeLayout>

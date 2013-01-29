@@ -183,8 +183,8 @@ public class RegisterUserActivity extends Activity
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
 		final View llay1 = (View)findViewById(R.id.crea_view_input_layout);
-		final View llay2 = (View)findViewById(R.id.crea_view_title);
-		final View llay3 = (View)findViewById(R.id.crea_view_btns);
+		final View llay2 = (View)findViewById(R.id.crea_view_title_layout);
+		final View llay3 = (View)findViewById(R.id.crea_view_btns_layout);
 		final View llay4 = (View)findViewById(R.id.crea_view_terms_layout);
 		
 		final View creaStatusView = (View)findViewById(R.id.crea_view_status_layout);
