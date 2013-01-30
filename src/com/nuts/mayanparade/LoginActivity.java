@@ -1,10 +1,13 @@
 package com.nuts.mayanparade;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -19,30 +22,35 @@ import org.apache.http.message.BasicNameValuePair;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-//import com.facebook.*;
-//import com.facebook.android.Facebook;
-//import com.facebook.model.*;
+import com.facebook.*;
+import com.facebook.widget.LoginButton;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-
 public class LoginActivity extends Activity
 {
 	/**
@@ -53,18 +61,19 @@ public class LoginActivity extends Activity
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
-	//private UserLoginTask mAuthTask = null;
+	private UserLoginTask mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
 
+	private UiLifecycleHelper uiHelper;
+
 	// UI references.
 	private EditText mEmailView;
 	private EditText mPasswordView;
-	/*private View mLoginFormView;
 	private View mLoginStatusView;
-	private TextView mLoginStatusMessageView;*/
+	//private TextView mLoginStatusMessageView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +81,45 @@ public class LoginActivity extends Activity
 
 		setContentView(R.layout.login_view);
 
+		//Fb setup
+		uiHelper = new UiLifecycleHelper(this, callback);
+	    uiHelper.onCreate(savedInstanceState);
+	    
+	    SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+	    String access_token = mPrefs.getString("access_token", null);
+
+	    Session session = Session.getActiveSession();
+	    if (session == null) {
+	        session = new Session(getApplicationContext());
+
+	        // Check if there is an existing token to be migrated 
+	        if(access_token != null) {                              
+	            // Clear the token info
+	            SharedPreferences.Editor editor = mPrefs.edit();
+	            editor.putString("access_token", null);
+	            editor.commit();    
+	            // Create an AccessToken object for importing
+	            // just pass in the access token and take the
+	            // defaults on other values
+	            AccessToken accessToken = AccessToken.createFromExistingAccessToken(
+	                                        access_token,
+	                                        null, null, null, null);
+
+	            // statusCallback: Session.StatusCallback implementation
+	            session.open(accessToken, callback);
+	            Session.setActiveSession(session);
+	        }
+	    }
+		
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.login_view_txt_email);
 		mEmailView.setText(mEmail);
+		
+		mLoginStatusView = (View)findViewById(R.id.login_view_status_layout);
 
-		Log.i("Ver","Agregando el listener de campos");
 		mPasswordView = (EditText) findViewById(R.id.login_view_txt_pass);
-		/*mPasswordView
+		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView textView, int id,
@@ -90,7 +130,7 @@ public class LoginActivity extends Activity
 						}
 						return false;
 					}
-				});*/
+				});
 
 		//mLoginFormView = findViewById(R.id.login);
 		//mLoginStatusView = findViewById(R.id.login_status);
@@ -114,37 +154,19 @@ public class LoginActivity extends Activity
 				});
 
 		//Facebook Listeners
-		findViewById(R.id.login_view_btn_fb).setOnClickListener(
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						loginFacebook();
-					}
-				});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login_view, menu);
-		return true;
+		LoginButton authButton = (LoginButton) findViewById(R.id.login_view_btn_fb);
+		authButton.setReadPermissions(Arrays.asList("email"));
 	}
 	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	  super.onActivityResult(requestCode, resultCode, data);
-	  //Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-	}
-
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		/*if (mAuthTask != null) {
+		if (mAuthTask != null) {
 			return;
-		}*/
+		}
 
 		// Reset errors.
 		mEmailView.setError(null);
@@ -157,27 +179,31 @@ public class LoginActivity extends Activity
 		boolean cancel = false;
 		View focusView = null;
 
+		Log.i("Ver",">>>>>>>>Revisar campos");
+		int ecolor = R.color.error_text_color;
 		// Check for a valid password.
 		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
+			ErrorMessage(getString(R.string.error_field_required),mPasswordView);
 			focusView = mPasswordView;
+			//ErrorMessage();
 			cancel = true;
 		} else if (mPassword.length() < 2) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
+			ErrorMessage(getString(R.string.error_invalid_password),mPasswordView);
 			focusView = mPasswordView;
 			cancel = true;
 		}
 
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
+			ErrorMessage(getString(R.string.error_field_required),mEmailView);
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@") && (!mEmail.contains("."))) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
+		} else if (!mEmail.contains("@") || (!mEmail.contains("."))) {
+			ErrorMessage(getString(R.string.error_invalid_email),mEmailView);
 			focusView = mEmailView;
 			cancel = true;
 		}
+		Log.i("Ver",">>>>>>>>>>Paso");
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -188,8 +214,8 @@ public class LoginActivity extends Activity
 			// perform the user login attempt.
 			//mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			//mAuthTask = new UserLoginTask();
-			//mAuthTask.execute((Void) null);
+			mAuthTask = new UserLoginTask();
+			mAuthTask.execute((Void) null);
 		}
 	}
 
@@ -197,17 +223,58 @@ public class LoginActivity extends Activity
 	public void showCreateAccount()
 	{
 		Intent nextAct = new Intent(getBaseContext(),RegisterUserActivity.class);
-		finish();
 		startActivity(nextAct);
 	}
-	
+
 	/**
 	 * Facebook functions
 	 */
-	public void loginFacebook()
+	private Session.StatusCallback callback = new Session.StatusCallback() {
+	    @Override
+	    public void call(Session session, SessionState state, Exception exception) {
+	        onSessionStateChange(session, state, exception);
+	    }
+	};
+	
+	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+	    if (state.isOpened()) 
+	    {
+	        Log.i("Fb", "Logged in...");
+	        //Fb Login
+	    }
+	    else if (state.isClosed())
+	        Log.i("Fb", "Logged out...");
+	}
+	
+	@Override
+	public void onResume() {
+	    super.onResume();
+	    uiHelper.onResume();
+	}
+	
+	@Override
+	public void onPause() {
+	    super.onPause();
+	    uiHelper.onPause();
+	}
+
+	@Override
+	public void onDestroy() {
+	    super.onDestroy();
+	    uiHelper.onDestroy();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    uiHelper.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-		Log.i("Ver",">>>>>>>>>FBLogin");
-		//Facebook fb_ptr = new Facebook("260848030691990");
+	  super.onActivityResult(requestCode, resultCode, data);
+	  uiHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
 	/**
@@ -218,11 +285,15 @@ public class LoginActivity extends Activity
 		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
 		// for very easy animations. If available, use these APIs to fade-in
 		// the progress spinner.
-		/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+		final View llay1 = (View)findViewById(R.id.linearLayout1);
+		final View llay2 = (View)findViewById(R.id.linearLayout2);
+		final Button btn_accept = (Button)findViewById(R.id.login_view_btn_acept);
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
 
-			mLoginStatusView.setVisibility(View.VISIBLE);
+			//mLoginStatusView.setVisibility(View.VISIBLE);
 			mLoginStatusView.animate().setDuration(shortAnimTime)
 					.alpha(show ? 1 : 0)
 					.setListener(new AnimatorListenerAdapter() {
@@ -233,35 +304,58 @@ public class LoginActivity extends Activity
 						}
 					});
 
-			mLoginFormView.setVisibility(View.VISIBLE);
-			mLoginFormView.animate().setDuration(shortAnimTime)
+			/*llay1.setVisibility(View.VISIBLE);
+			llay2.setVisibility(View.VISIBLE);
+			btn_accept.setVisibility(View.VISIBLE);*/
+			llay1.animate().setDuration(shortAnimTime)
 					.alpha(show ? 0 : 1)
 					.setListener(new AnimatorListenerAdapter() {
 						@Override
 						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE
-									: View.VISIBLE);
+							llay1.setVisibility(show ? View.GONE : View.VISIBLE);
+							llay2.setVisibility(show ? View.GONE : View.VISIBLE);
+							btn_accept.setVisibility(show ? View.GONE : View.VISIBLE);
 						}
 					});
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
 			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-		}*/
+			llay1.setVisibility(show ? View.GONE : View.VISIBLE);
+			llay2.setVisibility(show ? View.GONE : View.VISIBLE);
+			btn_accept.setVisibility(show ? View.GONE : View.VISIBLE);
+		}
+	}
+
+	//Sets the color for error text's
+	protected void ErrorMessage(String errMsg, EditText etField)
+	{
+		int ecolor = R.color.error_text_color;
+		ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
+		SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
+		ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
+		etField.setError(ssbuilder);
 	}
 
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
 	 */
-	/*public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+		private Boolean mwebError;
+		private Boolean mLogError;
+		
 		@Override
 		protected Boolean doInBackground(Void... params) {
 
+			mwebError = false;
+			mLogError = true;
 			HttpClient webClient = new DefaultHttpClient();
-			HttpPost webPost = new HttpPost("http://www.nuts.mx/pakales/account/login");
+			HttpPost webPost = new HttpPost("http://www.proyectoskafe.com/pakales/account/login");
 			
+			EditText btn = (EditText)findViewById(R.id.login_view_txt_email);
+			Log.i("Ver",">>>>>>>>Autenticar");
+
 			try
 			{
 				List<NameValuePair> data = new ArrayList<NameValuePair>(2);
@@ -275,23 +369,40 @@ public class LoginActivity extends Activity
 				InputStream resStream = response.getEntity().getContent();
 				InputStreamReader srdr = new InputStreamReader(resStream);
 				BufferedReader brdr = new BufferedReader(srdr);
+				StringBuilder sbuild = new StringBuilder();
 				String sdata = null;
 
 				while((sdata = brdr.readLine()) != null)
-					sbuild.append(sdata+"\n");
+				{
+					if(!sdata.equals("\n"))
+					sbuild.append(sdata);
+				}
 				
+				Log.i("Ver",">>>>>>Resp:"+sbuild.toString());
 				if(!sbuild.toString().equals("Ok"))
+				{
+					Log.i("Ver",">>>>>>>>Fallo P");
 					return false;
+				}
+				mLogError = false;
 			}
 			catch (ClientProtocolException e)
 			{
-				Log.i("Versión","E>>>>>>>>>>Error protocolo");
+				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
+				Log.i("Ver",">>>>>>>>>>Fallo T");
+				ErrorMessage(getString(R.string.error_transmission),btn);
+				mwebError = true;
 				return false;
 			}
 			catch (IOException e)
 			{
-				Log.i("Versión","E>>>>>>>>>>Error IO");
+				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
+				Log.i("Ver",">>>>>>>>>>Fallo C");
+				ErrorMessage(getString(R.string.error_connection),btn);
+				mwebError = true;
 				return false;
+			} catch (Throwable e) {
+				e.printStackTrace();
 			}
 			
 			return true;
@@ -300,16 +411,16 @@ public class LoginActivity extends Activity
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				Intent nextAct = new Intent(getBaseContext(),MapActivity.class);
+			
+			if (!mLogError) {
+				Log.i("Ver",">>>>>>>>>>Hacia main menu: "+mPassword);
+				Intent nextAct = new Intent(getBaseContext(),MainActivity.class);
 				startActivity(nextAct);
-			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
+			} else if(!mwebError) {
+				Log.i("ver",">>>>>>>>>>Error y no es de web");
+				ErrorMessage(getString(R.string.error_invalid_user), mPasswordView);
 			}
+			showProgress(false);
 		}
 
 		@Override
@@ -317,5 +428,25 @@ public class LoginActivity extends Activity
 			mAuthTask = null;
 			showProgress(false);
 		}
-	}*/
+		
+		//Sets the color for error text's
+		protected void ErrorMessage(String errMsg, EditText etField)
+		{
+			int ecolor = R.color.error_text_color;
+			ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
+			SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
+			ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
+			etField.setError(ssbuilder);
+		}
+		
+		//Sets the color for error text's
+		protected void ErrorMessage(String errMsg, Button btnField)
+		{
+			int ecolor = R.color.error_text_color;
+			ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
+			SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
+			ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
+			btnField.setError(ssbuilder);
+		}
+	}
 }
