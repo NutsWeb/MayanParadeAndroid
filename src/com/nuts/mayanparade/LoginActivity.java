@@ -157,14 +157,7 @@ public class LoginActivity extends Activity
 		LoginButton authButton = (LoginButton) findViewById(R.id.login_view_btn_fb);
 		authButton.setReadPermissions(Arrays.asList("email"));
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login_view, menu);
-		return true;
-	}
-
+	
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
@@ -194,7 +187,7 @@ public class LoginActivity extends Activity
 			focusView = mPasswordView;
 			//ErrorMessage();
 			cancel = true;
-		} else if (mPassword.length() < 3) {
+		} else if (mPassword.length() < 2) {
 			ErrorMessage(getString(R.string.error_invalid_password),mPasswordView);
 			focusView = mPasswordView;
 			cancel = true;
@@ -210,6 +203,7 @@ public class LoginActivity extends Activity
 			focusView = mEmailView;
 			cancel = true;
 		}
+		Log.i("Ver",">>>>>>>>>>Paso");
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -294,11 +288,12 @@ public class LoginActivity extends Activity
 		final View llay1 = (View)findViewById(R.id.linearLayout1);
 		final View llay2 = (View)findViewById(R.id.linearLayout2);
 		final Button btn_accept = (Button)findViewById(R.id.login_view_btn_acept);
+		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
 
-			mLoginStatusView.setVisibility(View.VISIBLE);
+			//mLoginStatusView.setVisibility(View.VISIBLE);
 			mLoginStatusView.animate().setDuration(shortAnimTime)
 					.alpha(show ? 1 : 0)
 					.setListener(new AnimatorListenerAdapter() {
@@ -309,9 +304,9 @@ public class LoginActivity extends Activity
 						}
 					});
 
-			llay1.setVisibility(View.VISIBLE);
+			/*llay1.setVisibility(View.VISIBLE);
 			llay2.setVisibility(View.VISIBLE);
-			btn_accept.setVisibility(View.VISIBLE);
+			btn_accept.setVisibility(View.VISIBLE);*/
 			llay1.animate().setDuration(shortAnimTime)
 					.alpha(show ? 0 : 1)
 					.setListener(new AnimatorListenerAdapter() {
@@ -348,15 +343,18 @@ public class LoginActivity extends Activity
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		private Boolean mwebError;
+		private Boolean mLogError;
 		
 		@Override
 		protected Boolean doInBackground(Void... params) {
 
 			mwebError = false;
+			mLogError = true;
 			HttpClient webClient = new DefaultHttpClient();
-			HttpPost webPost = new HttpPost("http://www.nutsm.com/mayan/account/login");
+			HttpPost webPost = new HttpPost("http://www.proyectoskafe.com/pakales/account/login");
 			
-			Button btn = (Button)findViewById(R.id.login_view_btn_acept);
+			EditText btn = (EditText)findViewById(R.id.login_view_txt_email);
+			Log.i("Ver",">>>>>>>>Autenticar");
 
 			try
 			{
@@ -375,18 +373,23 @@ public class LoginActivity extends Activity
 				String sdata = null;
 
 				while((sdata = brdr.readLine()) != null)
-					sbuild.append(sdata+"\n");
+				{
+					if(!sdata.equals("\n"))
+					sbuild.append(sdata);
+				}
 				
+				Log.i("Ver",">>>>>>Resp:"+sbuild.toString());
 				if(!sbuild.toString().equals("Ok"))
 				{
-					//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
-					ErrorMessage(getString(R.string.error_invalid_user),btn);
+					Log.i("Ver",">>>>>>>>Fallo P");
 					return false;
 				}
+				mLogError = false;
 			}
 			catch (ClientProtocolException e)
 			{
 				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
+				Log.i("Ver",">>>>>>>>>>Fallo T");
 				ErrorMessage(getString(R.string.error_transmission),btn);
 				mwebError = true;
 				return false;
@@ -394,9 +397,12 @@ public class LoginActivity extends Activity
 			catch (IOException e)
 			{
 				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
-				ErrorMessage(getString(R.string.error_conection),btn);
+				Log.i("Ver",">>>>>>>>>>Fallo C");
+				ErrorMessage(getString(R.string.error_connection),btn);
 				mwebError = true;
 				return false;
+			} catch (Throwable e) {
+				e.printStackTrace();
 			}
 			
 			return true;
@@ -405,16 +411,16 @@ public class LoginActivity extends Activity
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
-			showProgress(false);
-
-			if (success) {
-				Intent nextAct = new Intent(getBaseContext(),MapActivity.class);
+			
+			if (!mLogError) {
+				Log.i("Ver",">>>>>>>>>>Hacia main menu: "+mPassword);
+				Intent nextAct = new Intent(getBaseContext(),MainActivity.class);
 				startActivity(nextAct);
 			} else if(!mwebError) {
-				/*mPasswordView
-						.setError(getString(R.string.error_incorrect_password));*/
-				ErrorMessage(getString(R.string.error_incorrect_password), mPasswordView);
+				Log.i("ver",">>>>>>>>>>Error y no es de web");
+				ErrorMessage(getString(R.string.error_invalid_user), mPasswordView);
 			}
+			showProgress(false);
 		}
 
 		@Override

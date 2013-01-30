@@ -7,9 +7,12 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="menu_forgot_password">Recover lost password</string>
     <string name="login_progress_signing_in">Ingresando . . .</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
+    <string name="error_invalid_email">La dirección de correo no es válida</string>
+    <string name="error_invalid_password">La contraseña es muy corta</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_field_required">Este campo es requerido</string>
+    <string name="error_invalid_user">Usuario o contraseña erroneos</string>
+    <string name="error_transmission">Error en la transferencia de datos ...</string>
+    <string name="error_connection">Error en la conexión con el servidor ...</string>
 
 </resources>

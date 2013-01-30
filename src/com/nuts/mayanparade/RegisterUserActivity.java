@@ -16,11 +16,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.nuts.mayanparade.LoginActivity.UserLoginTask;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -34,6 +37,8 @@ import android.widget.EditText;
 
 public class RegisterUserActivity extends Activity
 {
+	private UserRegisterTask mRegTask = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -98,14 +103,14 @@ public class RegisterUserActivity extends Activity
 			ErrorMessage(getString(R.string.error_field_required), etPass1);
 			focusView = etPass1;
 		}
-		else if(txtPass1.length() < 3)
+		else if(txtPass1.length() < 2)
 		{
 			ErrorMessage(getString(R.string.error_invalid_password), etPass1);
 			focusView = etPass1;
 		}
 		else if(!cbTerms.isChecked())
 		{
-			ErrorMessage("Debe aceptar los términos y condiciones", cbTerms);
+			ErrorMessage("Debe aceptar los términos y condiciones", etPass2);
 			focusView = cbTerms;
 		}
 		
@@ -118,59 +123,13 @@ public class RegisterUserActivity extends Activity
 		Log.i("Ver",">>>>>>>>>No hubo errores");
 		
 		showProgress(true);
-		addUserDB();
-	}
-	
-	protected void addUserDB()
-	{
-		EditText etName = (EditText)findViewById(R.id.crear_view_txt_name);
-		EditText etLastN = (EditText)findViewById(R.id.crear_view_txt_lastname);
-		EditText etEmail = (EditText)findViewById(R.id.crear_view_txt_mail);
-		EditText etPass = (EditText)findViewById(R.id.crear_view_txt_pass);
-		
-		HttpClient webClient = new DefaultHttpClient();
-		HttpPost webPost = new HttpPost("http://www.nuts.mx/pakales/home/addUser");
-		
-		try
-		{
-			List<NameValuePair> data = new ArrayList<NameValuePair>(5);
-			data.add(new BasicNameValuePair("name", etName.getText().toString()));
-			data.add(new BasicNameValuePair("lastname", etLastN.getText().toString()));
-			data.add(new BasicNameValuePair("email", etEmail.getText().toString()));
-			data.add(new BasicNameValuePair("password", etPass.getText().toString()));
-			data.add(new BasicNameValuePair("type", "site"));
-			webPost.setEntity(new UrlEncodedFormEntity(data));
-			
-			HttpResponse response = webClient.execute(webPost);
-			InputStream istrm = response.getEntity().getContent();
-			InputStreamReader srdr = new InputStreamReader(istrm);
-			BufferedReader brdr = new BufferedReader(srdr);
-			StringBuilder sbuild = new StringBuilder();
-			String sdata = null;
-			
-			while((sdata = brdr.readLine()) != null)
-				sbuild.append(sdata+";");
-		}
-		catch(ClientProtocolException e)
-		{
-			ErrorMessage(getString(R.string.error_transmission), etName);
-			etName.requestFocus();
-			showProgress(false);
-			return;
-		}
-		catch(IOException e)
-		{
-			ErrorMessage(getString(R.string.error_conection), etName);
-			etName.requestFocus();
-			showProgress(false);
-			return;
-		}
-		showProgress(false);
-		showLoginView();
+		mRegTask = new UserRegisterTask();
+		mRegTask.execute((Void) null);
 	}
 	
 	public void showLoginView()
 	{
+		showProgress(false);
 		finish();
 	}
 	
@@ -195,7 +154,6 @@ public class RegisterUserActivity extends Activity
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
 
-			creaStatusView.setVisibility(View.VISIBLE);
 			creaStatusView.animate().setDuration(shortAnimTime)
 					.alpha(show ? 1 : 0)
 					.setListener(new AnimatorListenerAdapter() {
@@ -206,11 +164,6 @@ public class RegisterUserActivity extends Activity
 						}
 					});
 
-			llay1.setVisibility(View.VISIBLE);
-			llay2.setVisibility(View.VISIBLE);
-			llay3.setVisibility(View.VISIBLE);
-			llay4.setVisibility(View.VISIBLE);
-			//btn_accept.setVisibility(View.VISIBLE);
 			llay1.animate().setDuration(shortAnimTime)
 					.alpha(show ? 0 : 1)
 					.setListener(new AnimatorListenerAdapter() {
@@ -263,5 +216,102 @@ public class RegisterUserActivity extends Activity
 		SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
 		ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
 		cbField.setError(ssbuilder);
+	}
+	
+	public class UserRegisterTask extends AsyncTask<Void, Void, Boolean>
+	{
+		private Boolean mwebError;
+		private Boolean mregError;
+		@Override
+		protected Boolean doInBackground(Void... params)
+		{
+			mwebError = true;
+			mregError = true;
+			EditText etName = (EditText)findViewById(R.id.crear_view_txt_name);
+			EditText etLastN = (EditText)findViewById(R.id.crear_view_txt_lastname);
+			EditText etEmail = (EditText)findViewById(R.id.crear_view_txt_mail);
+			EditText etPass = (EditText)findViewById(R.id.crear_view_txt_pass);
+			
+			HttpClient webClient = new DefaultHttpClient();
+			HttpPost webPost = new HttpPost("http://www.proyectoskafe.com/pakales/home/addUser");
+			
+			try
+			{
+				List<NameValuePair> data = new ArrayList<NameValuePair>(5);
+				data.add(new BasicNameValuePair("name", etName.getText().toString()));
+				data.add(new BasicNameValuePair("lastname", etLastN.getText().toString()));
+				data.add(new BasicNameValuePair("email", etEmail.getText().toString()));
+				data.add(new BasicNameValuePair("password", etPass.getText().toString()));
+				data.add(new BasicNameValuePair("type", "site"));
+				webPost.setEntity(new UrlEncodedFormEntity(data));
+				
+				HttpResponse response = webClient.execute(webPost);
+				InputStream istrm = response.getEntity().getContent();
+				InputStreamReader srdr = new InputStreamReader(istrm);
+				BufferedReader brdr = new BufferedReader(srdr);
+				StringBuilder sbuild = new StringBuilder();
+				String sdata = null;
+				
+				while((sdata = brdr.readLine()) != null)
+					sbuild.append(sdata+";");
+				if(sbuild.toString().contains("Ok"))
+					mregError = false;
+				mwebError = false;
+			}
+			catch(ClientProtocolException e)
+			{
+				ErrorMessage(getString(R.string.error_transmission), etName);
+				etName.requestFocus();
+				return false;
+			}
+			catch(IOException e)
+			{
+				ErrorMessage(getString(R.string.error_connection), etName);
+				etName.requestFocus();
+				return false;
+			}
+			
+			return true;
+		}
+		
+		@Override
+		protected void onPostExecute(final Boolean success)
+		{
+			mRegTask = null;
+			
+			if (!mregError) {
+					showLoginView();
+			} else if(!mwebError){
+				EditText etName = (EditText)findViewById(R.id.crear_view_txt_name);
+				ErrorMessage(getString(R.string.error_invalid_user),etName);
+			}
+			showProgress(false);
+		}
+		
+		@Override
+		protected void onCancelled()
+		{
+			showProgress(false);
+		}
+		
+		//Sets the color for error text's
+		protected void ErrorMessage(String errMsg, EditText etField)
+		{
+			int ecolor = R.color.error_text_color;
+			ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
+			SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
+			ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
+			etField.setError(ssbuilder);
+		}
+		
+		//Sets the color for error text's
+		/*protected void ErrorMessage(String errMsg, Button btnField)
+		{
+			int ecolor = R.color.error_text_color;
+			ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
+			SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
+			ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
+			btnField.setError(ssbuilder);
+		}*/
 	}
 }
