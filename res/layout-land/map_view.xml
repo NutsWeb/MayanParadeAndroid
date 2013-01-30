@@ -14,7 +14,7 @@
 
     <fragment
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/map"
+        android:id="@+id/map_view_map"
         android:layout_width="325dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
@@ -29,7 +29,7 @@
         android:layout_alignParentLeft="true" >
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/map_view_home"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/app_btn_home" />
@@ -106,7 +106,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -150,7 +151,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -194,7 +196,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="gone" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -233,7 +236,6 @@
                         android:src="@drawable/map_view_pinkline" />
                 </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
 
     </ScrollView>
@@ -248,13 +250,13 @@
         android:layout_marginTop="24dp" >
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/map_view_regresarpais"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/map_view_btn_regresarpais" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/map_view_pais"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"

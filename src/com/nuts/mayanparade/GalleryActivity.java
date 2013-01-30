@@ -39,8 +39,8 @@ public class GalleryActivity extends Activity
 		
 		listOfFiles = new ArrayList<File>();
 		//Load files
-		File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		Log.i("Gallery", "Path >>>>>>>> " + path.getAbsolutePath());
+		File path = new File(getExternalCacheDir(), "../files/Gallery");
+		Log.i("Gallery", "Path >>>>>>>> " + path.getAbsolutePath() + " " + Environment.getExternalStorageDirectory().getAbsolutePath());
 		if(path.isDirectory())
 		{
 			File[] files = path.listFiles(); 
@@ -72,7 +72,7 @@ public class GalleryActivity extends Activity
 
 		// Events listerners
 		myGallery.setOnItemSelectedListener(OnGallerySelected);
-		findViewById(R.id.emailSend).setOnClickListener(new View.OnClickListener()
+		findViewById(R.id.gallery_view_emailSend).setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
 			{
@@ -80,7 +80,7 @@ public class GalleryActivity extends Activity
 			}
 		});
 		
-		findViewById(R.id.delete).setOnClickListener(new View.OnClickListener()
+		findViewById(R.id.gallery_view_delete).setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
 			{
@@ -89,6 +89,13 @@ public class GalleryActivity extends Activity
 			}
 		});
 		
+		findViewById(R.id.gallery_view_home).setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+			{
+				finish();
+			}
+		});
 	}
 	
 	OnItemSelectedListener OnGallerySelected = new OnItemSelectedListener()

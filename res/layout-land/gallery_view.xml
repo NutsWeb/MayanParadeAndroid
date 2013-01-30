@@ -8,25 +8,23 @@
     <Gallery
         android:id="@+id/myGallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="270dp"
         android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
     <ImageView
         android:id="@+id/myFullScreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/gallery_view_home"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="70dp"
         android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"
         android:src="@drawable/login_view_bg" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/gallery_view_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -34,7 +32,7 @@
         android:background="@drawable/galeriasinglefoto_gallery_view_btn_home" />
 
     <Button
-        android:id="@+id/delete"
+        android:id="@+id/gallery_view_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/myFullScreen"
@@ -42,10 +40,10 @@
         android:background="@drawable/galeriasinglefoto_gallery_view_single_delete" />
 
     <Button
-        android:id="@+id/emailSend"
+        android:id="@+id/gallery_view_emailSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/delete"
+        android:layout_above="@+id/gallery_view_delete"
         android:layout_alignParentRight="true"
         android:background="@drawable/galeriasinglefoto_gallery_view_single_send" />
 

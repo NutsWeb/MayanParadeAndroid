@@ -11,56 +11,16 @@
         android:src="@drawable/login_view_bg" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/settings_view_cache"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="18dp"
-        android:background="@drawable/settings_view_btn_home" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/settings_view_btn_back" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="5dp"
-        android:contentDescription="@string/desc"
-        android:src="@drawable/login_view_cc_titleline" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/button2"
-        android:layout_marginRight="84dp"
-        android:layout_toLeftOf="@+id/button2"
-        android:contentDescription="@string/desc"
-        android:src="@drawable/settings_view_title" />
-
-    <Button
-        android:id="@+id/settings-Descargar-Cache"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/Button03"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/settings_view_btn_descarga"
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/settings-Salir-Twitter"
+        android:id="@+id/settings_view_twitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -71,7 +31,7 @@
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/settings-Terminos"
+        android:id="@+id/settings_view_terms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
@@ -79,7 +39,7 @@
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/settings-Salir-Cuenta"
+        android:id="@+id/setttings_view_cuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView2"
@@ -88,11 +48,39 @@
         android:background="@drawable/settings_view_btn_salirapp" />
 
     <Button
-        android:id="@+id/settings-Salir-Facebook"
+        android:id="@+id/settings_view_fb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/settings-Salir-Cuenta"
-        android:layout_below="@+id/settings-Salir-Cuenta"
+        android:layout_alignLeft="@+id/setttings_view_cuenta"
+        android:layout_below="@+id/setttings_view_cuenta"
         android:background="@drawable/settings_view_btn_salirfb" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageView2"
+        android:layout_alignRight="@+id/setttings_view_cuenta"
+        android:contentDescription="@string/desc"
+        android:src="@drawable/settings_view_title" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/settings_view_home"
+        android:layout_alignParentLeft="true"
+        android:contentDescription="@string/desc"
+        android:src="@drawable/login_view_cc_titleline" />
+
+    <Button
+        android:id="@+id/settings_view_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/settings_view_btn_home" />
 
 </RelativeLayout>
