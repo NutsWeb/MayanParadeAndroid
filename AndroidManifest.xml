@@ -44,6 +44,7 @@
         <activity android:name="com.nuts.mayanparade.RegisterUserActivity" />
         <activity android:name="com.nuts.mayanparade.MapActivity"/>
         <activity android:name="com.nuts.mayanparade.MainActivity"/>
+        <activity android:name="com.nuts.mayanparade.GalleryActivity"/>
 
         <meta-data
 		    android:name="com.google.android.maps.v2.API_KEY"
