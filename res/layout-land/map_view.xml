@@ -3,6 +3,9 @@
     android:id="@+id/map_controller"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/login_view_bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:gravity="left" >
 
     <ImageView

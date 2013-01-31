@@ -354,7 +354,7 @@ public class LoginActivity extends Activity
 			btn_accept.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
-
+	
 	//Sets the color for error text's
 	protected void ErrorMessage(String errMsg, EditText etField)
 	{
@@ -418,7 +418,7 @@ public class LoginActivity extends Activity
 			{
 				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
 				Log.i("Ver",">>>>>>>>>>Fallo T");
-				//ErrorMessage(getString(R.string.error_transmission),btn);
+				ErrorMessage(getString(R.string.error_transmission),btn);
 				mwebError = true;
 				return false;
 			}
@@ -426,7 +426,7 @@ public class LoginActivity extends Activity
 			{
 				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
 				Log.i("Ver",">>>>>>>>>>Fallo C");
-				//ErrorMessage(getString(R.string.error_connection), btn);
+				ErrorMessage(getString(R.string.error_connection), btn);
 				mwebError = true;
 				return false;
 			} catch (Throwable e) {
@@ -462,13 +462,19 @@ public class LoginActivity extends Activity
 		}
 		
 		//Sets the color for error text's
-		protected void ErrorMessage(String errMsg, EditText etField)
+		protected void ErrorMessage(final String errMsg, final EditText etField)
 		{
-			int ecolor = R.color.error_text_color;
-			ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
-			SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
-			ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
-			etField.setError(ssbuilder);
+			runOnUiThread(new Runnable() 
+			  {
+				  public void run() 
+				  {
+					int ecolor = R.color.error_text_color;
+					ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
+					SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
+					ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
+					etField.setError(ssbuilder);
+				  }
+			});
 		}
 	}
 }
