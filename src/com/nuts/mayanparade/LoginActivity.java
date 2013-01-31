@@ -24,6 +24,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -37,7 +38,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -74,6 +77,8 @@ public class LoginActivity extends Activity
 	private EditText mPasswordView;
 	private View mLoginStatusView;
 	//private TextView mLoginStatusMessageView;
+	
+	private int mwebError;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,10 +136,6 @@ public class LoginActivity extends Activity
 						return false;
 					}
 				});
-
-		//mLoginFormView = findViewById(R.id.login);
-		//mLoginStatusView = findViewById(R.id.login_status);
-		//mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
 		//Login listener
 		findViewById(R.id.login_view_btn_acept).setOnClickListener(
@@ -304,9 +305,6 @@ public class LoginActivity extends Activity
 						}
 					});
 
-			/*llay1.setVisibility(View.VISIBLE);
-			llay2.setVisibility(View.VISIBLE);
-			btn_accept.setVisibility(View.VISIBLE);*/
 			llay1.animate().setDuration(shortAnimTime)
 					.alpha(show ? 0 : 1)
 					.setListener(new AnimatorListenerAdapter() {
@@ -336,19 +334,36 @@ public class LoginActivity extends Activity
 		ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
 		etField.setError(ssbuilder);
 	}
+	
+	protected void SendWebError()
+	{
+		if(mwebError == 1)
+			SetTransmitionError();
+		if(mwebError == 2)
+			SetConecctionError();
+	}
+	
+	protected void SetTransmitionError()
+	{
+		ErrorMessage(getString(R.string.error_transmission),mEmailView);
+	}
+	
+	protected void SetConecctionError()
+	{
+		ErrorMessage(getString(R.string.error_connection), mEmailView);
+	}
 
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		private Boolean mwebError;
 		private Boolean mLogError;
 		
 		@Override
 		protected Boolean doInBackground(Void... params) {
 
-			mwebError = false;
+			mwebError = 0;
 			mLogError = true;
 			HttpClient webClient = new DefaultHttpClient();
 			HttpPost webPost = new HttpPost("http://www.proyectoskafe.com/pakales/account/login");
@@ -388,18 +403,16 @@ public class LoginActivity extends Activity
 			}
 			catch (ClientProtocolException e)
 			{
-				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
 				Log.i("Ver",">>>>>>>>>>Fallo T");
 				ErrorMessage(getString(R.string.error_transmission),mEmailView);
-				mwebError = true;
+				mwebError = 1;
 				return false;
 			}
 			catch (IOException e)
 			{
-				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
-				Log.i("Ver",">>>>>>>>>>Fallo C");
+				Log.i("Ver",">>>>>>>>>>Fallo Cnx");
 				ErrorMessage(getString(R.string.error_connection), mEmailView);
-				mwebError = true;
+				mwebError = 2;
 				return false;
 			} catch (Throwable e)
 			{
@@ -418,7 +431,7 @@ public class LoginActivity extends Activity
 				Log.i("Ver",">>>>>>>>>>Hacia main menu: "+mPassword);
 				Intent nextAct = new Intent(getBaseContext(),MainActivity.class);
 				startActivity(nextAct);
-			} else if(!mwebError) {
+			} else if(mwebError != 0) {
 				Log.i("ver",">>>>>>>>>>Error y no es de web");
 				ErrorMessage(getString(R.string.error_invalid_user), mPasswordView);
 			}
@@ -432,13 +445,19 @@ public class LoginActivity extends Activity
 		}
 		
 		//Sets the color for error text's
-		protected void ErrorMessage(String errMsg, EditText etField)
+		protected void ErrorMessage(final String errMsg, final EditText etField)
 		{
-			int ecolor = R.color.error_text_color;
-			ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
-			SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
-			ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
-			etField.setError(ssbuilder);
+			runOnUiThread(new Runnable() 
+		    {
+			    public void run() 
+			    {
+				    int ecolor = R.color.error_text_color;
+				    ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
+				    SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
+				    ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
+				    etField.setError(ssbuilder);
+			    }
+		    });
 		}
 	}
 }

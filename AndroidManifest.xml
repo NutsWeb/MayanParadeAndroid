@@ -43,7 +43,7 @@
         <activity
             android:name="com.nuts.mayanparade.LoginActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape" >
             <intent-filter>
@@ -53,7 +53,9 @@
         </activity>
         
         <activity android:name="com.facebook.LoginActivity"></activity>
-        <activity android:name="com.nuts.mayanparade.RegisterUserActivity" />
+        <activity
+            android:name="com.nuts.mayanparade.RegisterUserActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity android:name="com.nuts.mayanparade.MapActivity"/>
         <activity android:name="com.nuts.mayanparade.MainActivity"/>
         <activity android:name="com.nuts.mayanparade.GalleryActivity"/>
