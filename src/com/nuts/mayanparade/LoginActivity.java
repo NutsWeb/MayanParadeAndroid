@@ -390,7 +390,7 @@ public class LoginActivity extends Activity
 			{
 				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
 				Log.i("Ver",">>>>>>>>>>Fallo T");
-				ErrorMessage(getString(R.string.error_transmission),btn);
+				ErrorMessage(getString(R.string.error_transmission),mEmailView);
 				mwebError = true;
 				return false;
 			}
@@ -398,10 +398,11 @@ public class LoginActivity extends Activity
 			{
 				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
 				Log.i("Ver",">>>>>>>>>>Fallo C");
-				ErrorMessage(getString(R.string.error_connection), btn);
+				ErrorMessage(getString(R.string.error_connection), mEmailView);
 				mwebError = true;
 				return false;
-			} catch (Throwable e) {
+			} catch (Throwable e)
+			{
 				e.printStackTrace();
 			}
 			
@@ -409,7 +410,8 @@ public class LoginActivity extends Activity
 		}
 
 		@Override
-		protected void onPostExecute(final Boolean success) {
+		protected void onPostExecute(final Boolean success)
+		{
 			mAuthTask = null;
 			
 			if (!mLogError) {
