@@ -156,6 +156,29 @@ public class LoginActivity extends Activity
 		//Facebook Listeners
 		LoginButton authButton = (LoginButton) findViewById(R.id.login_view_btn_fb);
 		authButton.setReadPermissions(Arrays.asList("email"));
+		
+		if(LoadPrefs() != null)
+			ShowMainMenu();
+	}
+	
+	public void SavePerfs(String user)
+	{
+	 	SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+	    SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putString("login", user);
+        editor.commit();  
+	}
+	
+	public String LoadPrefs()
+	{
+		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+		return mPrefs.getString("login", null);
+	}
+	
+	public void ShowMainMenu()
+	{
+		Intent newActivity = new Intent(getBaseContext(), MainActivity.class);
+		startActivity(newActivity);
 	}
 	
 	/**
@@ -241,9 +264,14 @@ public class LoginActivity extends Activity
 	    {
 	        Log.i("Fb", "Logged in...");
 	        //Fb Login
+	        SavePerfs("facebook");
+	        ShowMainMenu();
 	    }
 	    else if (state.isClosed())
 	        Log.i("Fb", "Logged out...");
+	        //Go to main
+	        SavePerfs("facebook");
+	        ShowMainMenu();
 	}
 	
 	@Override
@@ -390,7 +418,7 @@ public class LoginActivity extends Activity
 			{
 				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
 				Log.i("Ver",">>>>>>>>>>Fallo T");
-				ErrorMessage(getString(R.string.error_transmission),btn);
+				//ErrorMessage(getString(R.string.error_transmission),btn);
 				mwebError = true;
 				return false;
 			}
@@ -398,7 +426,7 @@ public class LoginActivity extends Activity
 			{
 				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
 				Log.i("Ver",">>>>>>>>>>Fallo C");
-				ErrorMessage(getString(R.string.error_connection), btn);
+				//ErrorMessage(getString(R.string.error_connection), btn);
 				mwebError = true;
 				return false;
 			} catch (Throwable e) {
@@ -414,6 +442,10 @@ public class LoginActivity extends Activity
 			
 			if (!mLogError) {
 				Log.i("Ver",">>>>>>>>>>Hacia main menu: "+mPassword);
+				SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+			    SharedPreferences.Editor editor = mPrefs.edit();
+		        editor.putString("login", mEmail);
+		        editor.commit();  
 				Intent nextAct = new Intent(getBaseContext(),MainActivity.class);
 				startActivity(nextAct);
 			} else if(!mwebError) {
