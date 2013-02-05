@@ -24,7 +24,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -38,9 +37,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -77,8 +74,6 @@ public class LoginActivity extends Activity
 	private EditText mPasswordView;
 	private View mLoginStatusView;
 	//private TextView mLoginStatusMessageView;
-	
-	private int mwebError;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +132,10 @@ public class LoginActivity extends Activity
 					}
 				});
 
+		//mLoginFormView = findViewById(R.id.login);
+		//mLoginStatusView = findViewById(R.id.login_status);
+		//mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+
 		//Login listener
 		findViewById(R.id.login_view_btn_acept).setOnClickListener(
 				new View.OnClickListener() {
@@ -157,6 +156,29 @@ public class LoginActivity extends Activity
 		//Facebook Listeners
 		LoginButton authButton = (LoginButton) findViewById(R.id.login_view_btn_fb);
 		authButton.setReadPermissions(Arrays.asList("email"));
+		
+		if(LoadPrefs() != null)
+			ShowMainMenu();
+	}
+	
+	public void SavePerfs(String user)
+	{
+	 	SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+	    SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putString("login", user);
+        editor.commit();  
+	}
+	
+	public String LoadPrefs()
+	{
+		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+		return mPrefs.getString("login", null);
+	}
+	
+	public void ShowMainMenu()
+	{
+		Intent newActivity = new Intent(getBaseContext(), MainActivity.class);
+		startActivity(newActivity);
 	}
 	
 	/**
@@ -242,9 +264,14 @@ public class LoginActivity extends Activity
 	    {
 	        Log.i("Fb", "Logged in...");
 	        //Fb Login
+	        SavePerfs("facebook");
+	        ShowMainMenu();
 	    }
 	    else if (state.isClosed())
 	        Log.i("Fb", "Logged out...");
+	        //Go to main
+	        SavePerfs("facebook");
+	        ShowMainMenu();
 	}
 	
 	@Override
@@ -305,6 +332,9 @@ public class LoginActivity extends Activity
 						}
 					});
 
+			/*llay1.setVisibility(View.VISIBLE);
+			llay2.setVisibility(View.VISIBLE);
+			btn_accept.setVisibility(View.VISIBLE);*/
 			llay1.animate().setDuration(shortAnimTime)
 					.alpha(show ? 0 : 1)
 					.setListener(new AnimatorListenerAdapter() {
@@ -324,7 +354,7 @@ public class LoginActivity extends Activity
 			btn_accept.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
-
+	
 	//Sets the color for error text's
 	protected void ErrorMessage(String errMsg, EditText etField)
 	{
@@ -334,36 +364,19 @@ public class LoginActivity extends Activity
 		ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
 		etField.setError(ssbuilder);
 	}
-	
-	protected void SendWebError()
-	{
-		if(mwebError == 1)
-			SetTransmitionError();
-		if(mwebError == 2)
-			SetConecctionError();
-	}
-	
-	protected void SetTransmitionError()
-	{
-		ErrorMessage(getString(R.string.error_transmission),mEmailView);
-	}
-	
-	protected void SetConecctionError()
-	{
-		ErrorMessage(getString(R.string.error_connection), mEmailView);
-	}
 
 	/**
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+		private Boolean mwebError;
 		private Boolean mLogError;
 		
 		@Override
 		protected Boolean doInBackground(Void... params) {
 
-			mwebError = 0;
+			mwebError = false;
 			mLogError = true;
 			HttpClient webClient = new DefaultHttpClient();
 			HttpPost webPost = new HttpPost("http://www.proyectoskafe.com/pakales/account/login");
@@ -403,19 +416,20 @@ public class LoginActivity extends Activity
 			}
 			catch (ClientProtocolException e)
 			{
+				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
 				Log.i("Ver",">>>>>>>>>>Fallo T");
-				ErrorMessage(getString(R.string.error_transmission),mEmailView);
-				mwebError = 1;
+				ErrorMessage(getString(R.string.error_transmission),btn);
+				mwebError = true;
 				return false;
 			}
 			catch (IOException e)
 			{
-				Log.i("Ver",">>>>>>>>>>Fallo Cnx");
-				ErrorMessage(getString(R.string.error_connection), mEmailView);
-				mwebError = 2;
+				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
+				Log.i("Ver",">>>>>>>>>>Fallo C");
+				ErrorMessage(getString(R.string.error_connection), btn);
+				mwebError = true;
 				return false;
-			} catch (Throwable e)
-			{
+			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 			
@@ -423,15 +437,18 @@ public class LoginActivity extends Activity
 		}
 
 		@Override
-		protected void onPostExecute(final Boolean success)
-		{
+		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
 			
 			if (!mLogError) {
 				Log.i("Ver",">>>>>>>>>>Hacia main menu: "+mPassword);
+				SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+			    SharedPreferences.Editor editor = mPrefs.edit();
+		        editor.putString("login", mEmail);
+		        editor.commit();  
 				Intent nextAct = new Intent(getBaseContext(),MainActivity.class);
 				startActivity(nextAct);
-			} else if(mwebError != 0) {
+			} else if(!mwebError) {
 				Log.i("ver",">>>>>>>>>>Error y no es de web");
 				ErrorMessage(getString(R.string.error_invalid_user), mPasswordView);
 			}
@@ -448,16 +465,16 @@ public class LoginActivity extends Activity
 		protected void ErrorMessage(final String errMsg, final EditText etField)
 		{
 			runOnUiThread(new Runnable() 
-		    {
-			    public void run() 
-			    {
-				    int ecolor = R.color.error_text_color;
-				    ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
-				    SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
-				    ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
-				    etField.setError(ssbuilder);
-			    }
-		    });
+			  {
+				  public void run() 
+				  {
+					int ecolor = R.color.error_text_color;
+					ForegroundColorSpan fgcspan = new ForegroundColorSpan(ecolor);
+					SpannableStringBuilder ssbuilder = new SpannableStringBuilder(errMsg);
+					ssbuilder.setSpan(fgcspan, 0, errMsg.length(), 0);
+					etField.setError(ssbuilder);
+				  }
+			});
 		}
 	}
 }

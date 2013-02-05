@@ -2,6 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/login_view_bg"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:gravity="top"
     tools:context=".MainActivity" >
 
@@ -90,15 +94,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/login_view_btn_acept"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login_view_logo"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/app_btn_aceptar" />
-
     <LinearLayout
         android:id="@+id/login_view_status_layout"
         android:layout_width="wrap_content"
@@ -122,5 +117,14 @@
             android:text="@string/login_progress_signing_in" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/login_view_btn_acept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/login_view_logo"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/app_btn_aceptar" />
 
 </RelativeLayout>
