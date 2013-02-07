@@ -16,7 +16,7 @@
 
     <fragment
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/map"
+        android:id="@+id/map_view_map"
         android:layout_width="950dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
@@ -24,6 +24,7 @@
         class="com.google.android.gms.maps.MapFragment" />
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,25 +48,28 @@
 
     <ScrollView
         android:id="@+id/scrollView1"
-        android:layout_width="wrap_content"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/imageView1"
         android:layout_marginTop="50dp"
-        android:layout_toLeftOf="@+id/map" >
+        android:layout_toLeftOf="@+id/map_view_map" >
 
         <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/map_view_options_layout"
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:orientation="vertical" >
 
             <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/TextView05"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -87,6 +91,7 @@
             </LinearLayout>
 
             <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="10dp" >
 
@@ -103,6 +108,7 @@
     </ScrollView>
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

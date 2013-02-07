@@ -203,7 +203,7 @@ public class LoginActivity extends Activity
 		View focusView = null;
 
 		Log.i("Ver",">>>>>>>>Revisar campos");
-		int ecolor = R.color.error_text_color;
+		//int ecolor = R.color.error_text_color;
 		// Check for a valid password.
 		if (TextUtils.isEmpty(mPassword)) {
 			ErrorMessage(getString(R.string.error_field_required),mPasswordView);
