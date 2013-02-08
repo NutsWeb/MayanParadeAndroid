@@ -6,13 +6,13 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 @Root
-public class PakalesRegion
+public class Pakales
 {
 	@ElementList
-	private List<Region> ArrayOfRegion;
+	private List<Pakal> ArrayOfPakal;
 	
-	public List<Region> getRegions()
+	public List<Pakal> getPakales()
 	{
-		return ArrayOfRegion;
+		return ArrayOfPakal;
 	}
 }

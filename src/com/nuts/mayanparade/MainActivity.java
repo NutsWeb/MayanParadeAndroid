@@ -71,8 +71,8 @@ public class MainActivity extends Activity
 	
 	protected void launchFriendList()
 	{
-		/*Intent nextAct = new Intent(getBaseContext(),FriendsActivity.class);
-		startActivity(nextAct);*/
+		Intent nextAct = new Intent(getBaseContext(),FriendsActivity.class);
+		startActivity(nextAct);
 	}
 	
 	protected void launchSettings()

@@ -1,18 +1,9 @@
 package com.nuts.mayanparade;
 
-import java.util.List;
-
 import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
 
-@Root
-public class Region
+public class Pakal
 {
-	private int _listInd;
-	public int getIndex() {return _listInd;}
-	public void setIndex(int index){_listInd = index;}
-	
 	@Element
 	private int Id;
 	
@@ -25,8 +16,14 @@ public class Region
 	@Element
 	private float Latitude;
 	
-	@ElementList
-	private List<SubRegion> SubRegions;
+	@Element
+	private String Region;
+	
+	@Element
+	private String SubRegion;
+	
+	@Element
+	private ArtistInfo Artist;
 	
 	public int getId(){return Id;}
 	
@@ -36,5 +33,9 @@ public class Region
 	
 	public float getLatitude(){return Latitude;}
 	
-	public List<SubRegion> getSubegions(){return SubRegions;}
+	public String getRegion(){return Region;}
+	
+	public String getSubRegion(){return SubRegion;}
+	
+	public ArtistInfo getArtist(){return Artist;}
 }

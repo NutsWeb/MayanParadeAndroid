@@ -6,6 +6,10 @@ import org.simpleframework.xml.Root;
 @Root
 public class SubRegion
 {
+	private int _listInd;
+	public int getIndex() {return _listInd;}
+	public void setIndex(int index){_listInd = index;}
+	
 	@Element
 	private int Id;
 	
