@@ -243,6 +243,7 @@ public class RegisterUserActivity extends Activity
 				data.add(new BasicNameValuePair("email", etEmail.getText().toString()));
 				data.add(new BasicNameValuePair("password", etPass.getText().toString()));
 				data.add(new BasicNameValuePair("type", "site"));
+				data.add(new BasicNameValuePair("fb", ""));
 				webPost.setEntity(new UrlEncodedFormEntity(data));
 				
 				HttpResponse response = webClient.execute(webPost);

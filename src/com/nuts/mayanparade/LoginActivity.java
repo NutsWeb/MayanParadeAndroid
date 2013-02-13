@@ -54,11 +54,6 @@ import com.facebook.widget.LoginButton;
 public class LoginActivity extends Activity
 {
 	/**
-	 * The default email to populate the email field with.
-	 */
-	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-
-	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
 	private UserLoginTask mAuthTask = null;
@@ -111,10 +106,7 @@ public class LoginActivity extends Activity
 	        }
 	    }
 		
-		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.login_view_txt_email);
-		mEmailView.setText(mEmail);
 		
 		mLoginStatusView = (View)findViewById(R.id.login_view_status_layout);
 
@@ -131,10 +123,6 @@ public class LoginActivity extends Activity
 						return false;
 					}
 				});
-
-		//mLoginFormView = findViewById(R.id.login);
-		//mLoginStatusView = findViewById(R.id.login_status);
-		//mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
 		//Login listener
 		findViewById(R.id.login_view_btn_acept).setOnClickListener(
@@ -202,8 +190,6 @@ public class LoginActivity extends Activity
 		boolean cancel = false;
 		View focusView = null;
 
-		Log.i("Ver",">>>>>>>>Revisar campos");
-		//int ecolor = R.color.error_text_color;
 		// Check for a valid password.
 		if (TextUtils.isEmpty(mPassword)) {
 			ErrorMessage(getString(R.string.error_field_required),mPasswordView);
@@ -226,7 +212,6 @@ public class LoginActivity extends Activity
 			focusView = mEmailView;
 			cancel = true;
 		}
-		Log.i("Ver",">>>>>>>>>>Paso");
 
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
@@ -331,10 +316,6 @@ public class LoginActivity extends Activity
 									: View.GONE);
 						}
 					});
-
-			/*llay1.setVisibility(View.VISIBLE);
-			llay2.setVisibility(View.VISIBLE);
-			btn_accept.setVisibility(View.VISIBLE);*/
 			llay1.animate().setDuration(shortAnimTime)
 					.alpha(show ? 0 : 1)
 					.setListener(new AnimatorListenerAdapter() {
@@ -416,16 +397,12 @@ public class LoginActivity extends Activity
 			}
 			catch (ClientProtocolException e)
 			{
-				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
-				Log.i("Ver",">>>>>>>>>>Fallo T");
 				ErrorMessage(getString(R.string.error_transmission),btn);
 				mwebError = true;
 				return false;
 			}
 			catch (IOException e)
 			{
-				//EditText mEmailView = (EditText)findViewById(R.id.login_view_txt_email);
-				Log.i("Ver",">>>>>>>>>>Fallo C");
 				ErrorMessage(getString(R.string.error_connection), btn);
 				mwebError = true;
 				return false;
@@ -441,15 +418,15 @@ public class LoginActivity extends Activity
 			mAuthTask = null;
 			
 			if (!mLogError) {
-				Log.i("Ver",">>>>>>>>>>Hacia main menu: "+mPassword);
-				SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
-			    SharedPreferences.Editor editor = mPrefs.edit();
-		        editor.putString("login", mEmail);
-		        editor.commit();  
-				Intent nextAct = new Intent(getBaseContext(),MainActivity.class);
-				startActivity(nextAct);
+				//SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+			    //SharedPreferences.Editor editor = mPrefs.edit();
+		        //editor.putString("login", mEmail);
+				//editor.commit();
+				SavePerfs(mEmail);
+				//Intent nextAct = new Intent(getBaseContext(),MainActivity.class);
+				//startActivity(nextAct);
+				ShowMainMenu();
 			} else if(!mwebError) {
-				Log.i("ver",">>>>>>>>>>Error y no es de web");
 				ErrorMessage(getString(R.string.error_invalid_user), mPasswordView);
 			}
 			showProgress(false);

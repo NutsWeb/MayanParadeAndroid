@@ -23,20 +23,35 @@ public class SettingsActivity extends Activity
 			}
 		});
 		
+		findViewById(R.id.settings_view_cuenta).setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				finishSession();
+			}
+		});
+		
 		findViewById(R.id.settings_view_fb).setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				//Close user
-				SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
-			    SharedPreferences.Editor editor = mPrefs.edit();
-		        editor.putString("login", null);
-		        editor.commit(); 
-		        //Go to login
-				Intent newActivity = new Intent(getBaseContext(), LoginActivity.class);
-				finish();
-				startActivity(newActivity);
+				finishSession();
 			}
 		});
+	}
+	
+	private void finishSession()
+	{
+		//Close user
+		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+	    SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putString("login", null);
+        editor.commit(); 
+        //Go to login
+		Intent newActivity = new Intent(getBaseContext(), LoginActivity.class);
+		finish(); //Settings
+		finish(); //Main menu
+		startActivity(newActivity);
 	}
 }
