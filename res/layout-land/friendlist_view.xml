@@ -45,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/friends_view_btn_regresar" />
+                android:src="@drawable/friends_view_btn_regresar"
+                android:visibility="gone" />
 
         </LinearLayout>
 

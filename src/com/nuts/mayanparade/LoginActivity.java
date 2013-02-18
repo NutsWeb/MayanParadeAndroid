@@ -45,6 +45,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.*;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
 /**
@@ -69,6 +70,8 @@ public class LoginActivity extends Activity
 	private EditText mPasswordView;
 	private View mLoginStatusView;
 	//private TextView mLoginStatusMessageView;
+	
+	private Session _fbSession;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +154,7 @@ public class LoginActivity extends Activity
 	
 	public void SavePerfs(String user)
 	{
-	 	SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+	 	SharedPreferences mPrefs = getSharedPreferences("PrefFile",MODE_PRIVATE);
 	    SharedPreferences.Editor editor = mPrefs.edit();
         editor.putString("login", user);
         editor.commit();  
@@ -159,7 +162,8 @@ public class LoginActivity extends Activity
 	
 	public String LoadPrefs()
 	{
-		SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
+		SharedPreferences mPrefs = getSharedPreferences("PrefFile",MODE_PRIVATE);
+		Log.i("Ver",">>>>>>>>Prefs: "+mPrefs.getString("login", null));
 		return mPrefs.getString("login", null);
 	}
 	
@@ -244,19 +248,57 @@ public class LoginActivity extends Activity
 	    }
 	};
 	
-	private void onSessionStateChange(Session session, SessionState state, Exception exception) {
-	    if (state.isOpened()) 
+	private void onSessionStateChange(Session session, SessionState state, Exception exception)
+	{
+		Log.i("Ver",">>>>>>>>>Cambió sesión: "+session.isOpened()+" "+state);
+		if (session.isOpened())
 	    {
 	        Log.i("Fb", "Logged in...");
-	        //Fb Login
-	        SavePerfs("facebook");
-	        ShowMainMenu();
+	        _fbSession = session;
 	    }
-	    else if (state.isClosed())
+		else
+		{
+			_fbSession = Session.getActiveSession();
+		}
+		
+		Log.i("Ver",">>>>>>>>>Cambió sesión 2: "+_fbSession.isOpened()+" "+_fbSession.getState());
+		if(_fbSession.isOpened())
+		{
+	        Request request = Request.newMeRequest(_fbSession,
+					new Request.GraphUserCallback()
+					{
+						@Override
+						public void onCompleted(GraphUser user, Response response)
+						{
+							if(user!=null)
+								Log.i("Ver",">>>>>>>>>>Request completo exite: "+response.toString());
+							else
+								Log.i("Ver",">>>>>>>>>>Request nulo: "+response.getError());
+							if((user!=null) && (_fbSession==Session.getActiveSession()))
+							{
+								Log.i("Ver",">>>>>>>>Registrando usuario de FB "+user.getFirstName()+" "+user.getId());
+								
+								UserFacebookRegisterTask regTask = new UserFacebookRegisterTask(user.getFirstName(),
+										user.getLastName(),
+										user.asMap().get("email").toString(),
+										user.getId());
+								regTask.execute((Void) null);
+							}
+						}
+					});
+			request.executeAsync();
+			
+	        //Fb Login
+	        //SavePerfs("facebook");
+	        //ShowMainMenu();
+	    }
+	    /*else if (state.isClosed())
+	    {
 	        Log.i("Fb", "Logged out...");
 	        //Go to main
 	        SavePerfs("facebook");
 	        ShowMainMenu();
+	    }*/
 	}
 	
 	@Override
@@ -418,13 +460,7 @@ public class LoginActivity extends Activity
 			mAuthTask = null;
 			
 			if (!mLogError) {
-				//SharedPreferences mPrefs = getPreferences(MODE_PRIVATE);
-			    //SharedPreferences.Editor editor = mPrefs.edit();
-		        //editor.putString("login", mEmail);
-				//editor.commit();
 				SavePerfs(mEmail);
-				//Intent nextAct = new Intent(getBaseContext(),MainActivity.class);
-				//startActivity(nextAct);
 				ShowMainMenu();
 			} else if(!mwebError) {
 				ErrorMessage(getString(R.string.error_invalid_user), mPasswordView);
@@ -452,6 +488,69 @@ public class LoginActivity extends Activity
 					etField.setError(ssbuilder);
 				  }
 			});
+		}
+	}
+	
+	public class UserFacebookRegisterTask extends AsyncTask<Void, Void, Boolean>
+	{
+		private String _name;
+		private String _lastname;
+		private String _email;
+		private String _facebookId;
+		
+		public UserFacebookRegisterTask(String name, String lastname, String email, String fid)
+		{
+			_name = name;
+			_lastname = lastname;
+			_email = email;
+			_facebookId = fid;
+		}
+		
+		@Override
+		protected Boolean doInBackground(Void... params)
+		{
+			try
+			{
+				HttpClient webClient = new DefaultHttpClient();
+				HttpPost webPost = new HttpPost("http://www.proyectoskafe.com/pakales/home/addUser");
+
+				List<NameValuePair> data = new ArrayList<NameValuePair>(6);
+				data.add(new BasicNameValuePair("name", _name));
+				data.add(new BasicNameValuePair("lastname", _lastname));
+				data.add(new BasicNameValuePair("email", _email));
+				data.add(new BasicNameValuePair("password", _facebookId));
+				data.add(new BasicNameValuePair("type", "facebook"));
+				data.add(new BasicNameValuePair("facebook_id", _facebookId));
+				webPost.setEntity(new UrlEncodedFormEntity(data));
+				
+				HttpResponse response = webClient.execute(webPost);
+				InputStream istrm = response.getEntity().getContent();
+				InputStreamReader srdr = new InputStreamReader(istrm);
+				BufferedReader brdr = new BufferedReader(srdr);
+				StringBuilder sbuild = new StringBuilder();
+				String sdata = null;
+				
+				while((sdata = brdr.readLine()) != null)
+					sbuild.append(sdata+";");
+			}
+			catch(Exception e)
+			{
+				return false;
+			}
+			return true;
+		}
+		
+		@Override
+		protected void onPostExecute(final Boolean sucsses)
+		{
+			if(sucsses)
+			{
+				Log.i("Ver",">>>>>>>>Usuario registrado");
+				SavePerfs(_email);
+		        ShowMainMenu();
+			}
+			else
+				Log.i("Ver",">>>>>>>>>>Error en el registro");
 		}
 	}
 }

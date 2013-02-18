@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QCARConfig>
     <Tracking>
+        <ImageTarget size="1 0.161187" name="PlacaBenqQR"/>
+        <ImageTarget size="0.988189 1" name="BenqQR"/>
         <ImageTarget size="72.160355 100" name="chiqui"/>
         <ImageTarget size="100 39.982109" name="basegrande"/>
         <ImageTarget size="100 37.416668" name="pruebaa2"/>

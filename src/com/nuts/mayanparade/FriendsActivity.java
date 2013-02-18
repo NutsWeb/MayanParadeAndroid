@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -33,27 +34,38 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.FriendPickerFragment;
 import com.facebook.widget.WebDialog;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Application;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.SyncStateContract.Constants;
 import android.test.PerformanceTestCase;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
@@ -122,15 +134,20 @@ public class FriendsActivity extends Activity
 		}).start();*/
 
 		showProgress(true);
-		FriendsTask ft = new FriendsTask();
+		FriendsTask ft = new FriendsTask(true);
 		ft.execute((Void) null);
 	}
 	
 	private void fillFriendList()
 	{
+		ImageView headLine = new ImageView(this);
+		
 		Log.i("Ver",">>>>>>Entra a llenar lista de amigos");
 		LinearLayout lay = (LinearLayout)findViewById(R.id.friends_view_list_layout);
 		lay.removeAllViews();
+		headLine.setImageResource(R.drawable.friends_view_linearosa);
+		lay.addView(headLine);
+
 		if((_usrList == null) || (_usrList.size() <= 0))
 		{
 			showProgress(false);
@@ -139,31 +156,39 @@ public class FriendsActivity extends Activity
 		
 		int usrCount = _usrList.size();
 
-		ImageView headLine = new ImageView(this);
-
 		LinearLayout layFriends[] = new LinearLayout[usrCount];
 		ImageView usrImg[] = new ImageView[usrCount];
+		ProgressBar imgPB[] = new ProgressBar[usrCount];
 		TextView usrName[] = new TextView[usrCount];
 		TextView pakCount[] = new TextView[usrCount];
 		ImageView addImg[] = new ImageView[usrCount];
 		ImageView line[] = new ImageView[usrCount];
 
-		headLine.setImageResource(R.drawable.friends_view_linearosa);
-		lay.addView(headLine);
 		for(int c=0; c<usrCount; c++)
 		{
 			layFriends[c] = new LinearLayout(this);
 			usrImg[c] = new ImageView(this);
+			imgPB[c] = new ProgressBar(this);
 			usrName[c] = new TextView(this);
 			pakCount[c] = new TextView(this);
 			addImg[c] = new ImageView(this);
 			line[c] = new ImageView(this);
 
-			usrImg[c].setImageResource(R.drawable.friends_view_cuadropic);
+			usrImg[c].setImageResource(R.drawable.com_facebook_profile_default_icon);
 			usrName[c].setText(_usrList.get(c).getName()+" "+_usrList.get(c).getLastName());
-			pakCount[c].setText("M/N");
+			pakCount[c].setText(_usrList.get(c).getEmail());
 			addImg[c].setImageResource(R.drawable.friends_view_masverde);
 			line[c].setImageResource(R.drawable.friends_view_linearosa);
+			
+			if((_usrList.get(c).getFacebookid() != null) && (!_usrList.get(c).getFacebookid().isEmpty()))
+			{
+				usrImg[c].setVisibility(View.GONE);
+				LoadUrlImageTask imgTask = new LoadUrlImageTask(usrImg[c], pakCount[c], _usrList.get(c).getFacebookid(),imgPB[c],addImg[c]);
+				imgTask.execute((Void) null);
+			}
+			else
+				imgPB[c].setVisibility(View.GONE);
+			pakCount[c].setText("M/N");
 			
 			LinearLayout.LayoutParams layParams1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			LinearLayout.LayoutParams layParams2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -171,6 +196,7 @@ public class FriendsActivity extends Activity
 			//LinearLayout.LayoutParams layParams4 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			layParams1.setMargins(20, 10, 10, 10);
 			layFriends[c].addView(usrImg[c],layParams1);
+			layFriends[c].addView(imgPB[c],layParams1);
 			layParams2.setMargins(20, 10, 10, 10);
 			layParams2.weight = 100;
 			layFriends[c].addView(usrName[c],layParams2);
@@ -206,6 +232,7 @@ public class FriendsActivity extends Activity
 		TextView usrName[] = new TextView[usrCount];
 		TextView usrEmail[] = new TextView[usrCount];
 		ImageView addImg[] = new ImageView[usrCount];
+		ProgressBar imgPB[] = new ProgressBar[usrCount];
 		ImageView line[] = new ImageView[usrCount];
 		
 		headLine.setImageResource(R.drawable.friends_view_lineaverde);
@@ -217,24 +244,25 @@ public class FriendsActivity extends Activity
 			usrName[c] = new TextView(this);
 			usrEmail[c] = new TextView(this);
 			addImg[c] = new ImageView(this);
+			imgPB[c] = new ProgressBar(this);
 			line[c] = new ImageView(this);
-
-			//_countAux = c;
-			//_ivAux = usrImg[c];
-			LoadUrlImageTask imgTask = new LoadUrlImageTask(usrImg[c], usrEmail[c], _fbFriends.get(c).getId());
-			imgTask.execute((Void) null);
 
 			usrName[c].setText(_fbFriends.get(c).getName());
 			usrEmail[c].setText("correo");
+			usrImg[c].setVisibility(View.GONE);
 			addImg[c].setImageResource(R.drawable.friends_view_masverde);
 			line[c].setImageResource(R.drawable.friends_view_lineaverde);
-			
+
+			LoadUrlImageTask imgTask = new LoadUrlImageTask(usrImg[c], usrEmail[c], _fbFriends.get(c).getId(),imgPB[c],addImg[c]);
+			imgTask.execute((Void) null);
+
 			LinearLayout.LayoutParams layParams1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			LinearLayout.LayoutParams layParams2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			LinearLayout.LayoutParams layParams3 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			LinearLayout.LayoutParams layParams4 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			layParams1.setMargins(20, 10, 10, 10);
 			layFriends[c].addView(usrImg[c],layParams1);
+			layFriends[c].addView(imgPB[c],layParams1);
 			layParams2.setMargins(20, 10, 10, 10);
 			layParams2.weight = 100;
 			layFriends[c].addView(usrName[c],layParams2);
@@ -252,8 +280,11 @@ public class FriendsActivity extends Activity
 	private void fillAddMailList()
 	{
 		LinearLayout lay = (LinearLayout)findViewById(R.id.friends_view_list_layout);
-		lay.removeAllViews();
+		ImageView headLine = new ImageView(this);
 		
+		lay.removeAllViews();
+		headLine.setImageResource(R.drawable.friends_view_lineaverde);
+		lay.addView(headLine);
 		if((_emailList == null) || (_emailList.size() <= 0))
 		{
 			showProgress(false);
@@ -261,33 +292,50 @@ public class FriendsActivity extends Activity
 		}
 		
 		int usrCount = _emailList.size();
-
-		ImageView headLine = new ImageView(this);
 		
 		LinearLayout layFriends[] = new LinearLayout[usrCount];
 		ImageView usrImg[] = new ImageView[usrCount];
+		ProgressBar imgPB[] = new ProgressBar[usrCount];
 		TextView usrName[] = new TextView[usrCount];
 		TextView pakCount[] = new TextView[usrCount];
 		ImageView addImg[] = new ImageView[usrCount];
 		ImageView line[] = new ImageView[usrCount];
 		
-		headLine.setImageResource(R.drawable.friends_view_lineaverde);
-		lay.addView(headLine);
 		for(int c=0; c<usrCount; c++)
 		{
 			layFriends[c] = new LinearLayout(this);
 			usrImg[c] = new ImageView(this);
+			imgPB[c] = new ProgressBar(this);
 			usrName[c] = new TextView(this);
 			pakCount[c] = new TextView(this);
 			addImg[c] = new ImageView(this);
 			line[c] = new ImageView(this);
 
-			usrImg[c].setImageResource(R.drawable.friends_view_cuadropic);
-			usrName[c].setText(_emailList.get(c).getName()+" "+_emailList.get(c).getLastName());
+			usrImg[c].setImageResource(R.drawable.com_facebook_profile_default_icon);
+			usrName[c].setText(_emailList.get(c).getName());
 			pakCount[c].setText(_emailList.get(c).getEmail());
 			addImg[c].setImageResource(R.drawable.friends_view_masverde);
 			line[c].setImageResource(R.drawable.friends_view_lineaverde);
-			
+
+			if((_emailList.get(c).getFacebookid() != null) && (!_emailList.get(c).getFacebookid().isEmpty()))
+			{
+				usrImg[c].setVisibility(View.GONE);
+				LoadUrlImageTask imgTask = new LoadUrlImageTask(usrImg[c], pakCount[c], _emailList.get(c).getFacebookid(),imgPB[c],addImg[c]);
+				imgTask.execute((Void) null);
+			}
+			else
+			{
+				imgPB[c].setVisibility(View.GONE);
+				addImg[c].setId(c+1);
+				addImg[c].setOnClickListener(new OnClickListener()
+				{
+					@Override
+					public void onClick(View v) {
+						addFacebookFriendToList(_emailList.get(v.getId()-1).getEmail(), v);
+					}
+				});
+			}
+
 			LinearLayout.LayoutParams layParams1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			LinearLayout.LayoutParams layParams2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			LinearLayout.LayoutParams layParams3 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -422,6 +470,12 @@ public class FriendsActivity extends Activity
 		else
 			fillAddMailList();
 	}
+	
+	public void addFacebookFriendToList(String usrEmail, View v)
+	{
+		AddFriendToListTask addf = new AddFriendToListTask(usrEmail,v);
+		addf.execute((Void) null);
+	}
 
 	/**
 	 * Facebook functions
@@ -478,7 +532,7 @@ public class FriendsActivity extends Activity
 						Log.i("Ver",">>>>>>>> Perms: "+actSess.getPermissions().toString());
 
 						_fbFriends = users;
-						for(int c=0; c<users.size(); c++)
+						//for(int c=0; c<users.size(); c++)
 							/*Log.i("Ver",">>>>>>>>Resp: "+users.get(c).getName()
 									+" "+users.get(c).getId());
 									+" "+users.get(c).getLink()
@@ -519,9 +573,6 @@ public class FriendsActivity extends Activity
 	    super.onSaveInstanceState(outState);
 	    uiHelper.onSaveInstanceState(outState);
 	}
-	/**
-	 * End Facebook functions
-	 */
 	
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -529,9 +580,18 @@ public class FriendsActivity extends Activity
 	  super.onActivityResult(requestCode, resultCode, data);
 	  uiHelper.onActivityResult(requestCode, resultCode, data);
 	}
+	/**
+	 * End Facebook functions
+	 */
 	
 	public class FriendsTask extends AsyncTask<Void, Void, Boolean>
 	{
+		private Boolean _makeList = true;
+		
+		public FriendsTask(Boolean list)
+		{
+			_makeList = list;
+		}
 		@Override
 		protected Boolean doInBackground(Void... params)
 		{
@@ -540,8 +600,10 @@ public class FriendsActivity extends Activity
 				HttpClient webClient = new DefaultHttpClient();
 				HttpPost webPost = new HttpPost("http://www.proyectoskafe.com/pakales/android/getFriends");
 
+				SharedPreferences mPrefs = getSharedPreferences("PrefFile",MODE_PRIVATE);
 				List<NameValuePair> data = new ArrayList<NameValuePair>(1);
-				data.add(new BasicNameValuePair("email", "uno@num.com"));
+				Log.i("Ver",">>>>>>>>>Usuario: "+mPrefs.getString("login", null));
+				data.add(new BasicNameValuePair("email",mPrefs.getString("login", null)));
 				webPost.setEntity(new UrlEncodedFormEntity(data));
 				HttpResponse resp = webClient.execute(webPost);
 				
@@ -585,7 +647,7 @@ public class FriendsActivity extends Activity
 		@Override
 		protected void onPostExecute(final Boolean success)
 		{
-			if(success)
+			if(success && _makeList)
 			{
 				fillFriendList();
 			}
@@ -601,22 +663,52 @@ public class FriendsActivity extends Activity
 			showProgress(false);
 		}
 	}
-
 	
 	public class AddContactsTask extends AsyncTask<Void, Void, Boolean>
 	{
 		@Override
 		protected Boolean doInBackground(Void... params)
 		{
+			if(_usrList==null)
+			{
+				Log.i("Ver",">>>>>>>Error de conexión");
+				return false;
+			}
 			try
 			{
+				Pattern emailPat = Patterns.EMAIL_ADDRESS; // API level 8+
+				Account[] contacts = AccountManager.get(getApplicationContext()).getAccounts();
+				List<NameValuePair> data = new ArrayList<NameValuePair>();
+				int dataCount = 0;
+				
+				ContentResolver cr = getContentResolver();
+				Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+		                null, null, null, null);
+		        if (cur.getCount() > 0)
+		        {
+		        	data.add(new BasicNameValuePair("nemail", String.valueOf(cur.getCount())));
+		        	while (cur.moveToNext())
+		        	{
+		        		String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+		        		
+		        		Cursor emailCur = cr.query(
+		        			ContactsContract.CommonDataKinds.Email.CONTENT_URI, 
+							null,
+							ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = ?", 
+							new String[]{id}, null);
+		        		if (emailCur.moveToNext())
+		        		{
+		        		    String email = emailCur.getString(emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA));
+		        		    data.add(new BasicNameValuePair("email"+String.valueOf(dataCount), email));
+		        		    dataCount++;
+		        	 	} 
+		        	 	emailCur.close();
+		        	}
+		        }
+		        
 				HttpClient webClient = new DefaultHttpClient();
 				HttpPost webPost = new HttpPost("http://www.proyectoskafe.com/pakales/android/getUsersByEmail");
 
-				List<NameValuePair> data = new ArrayList<NameValuePair>(3);
-				data.add(new BasicNameValuePair("nemail", "2"));
-				data.add(new BasicNameValuePair("email0", "dos@num.com"));
-				data.add(new BasicNameValuePair("email1", "abc@num.com"));
 				webPost.setEntity(new UrlEncodedFormEntity(data));
 				HttpResponse resp = webClient.execute(webPost);
 				
@@ -679,15 +771,19 @@ public class FriendsActivity extends Activity
 		private ImageView _ivFriend;
 		private TextView _tvFriendEMail;
 		private String _idFriend;
+		private ProgressBar _pbImg;
+		private ImageView _ivAdd;
 		
 		private User _usr;
 		private Bitmap _bmp;
 		
-		public LoadUrlImageTask(ImageView iv, TextView tv, String id)
+		public LoadUrlImageTask(ImageView iv, TextView tv, String id, ProgressBar pb, ImageView add)
 		{
 			_ivFriend = iv;
 			_tvFriendEMail = tv;
 			_idFriend = id;
+			_pbImg = pb;
+			_ivAdd = add;
 		}
 		
 		@Override
@@ -724,6 +820,13 @@ public class FriendsActivity extends Activity
 					public void run()
 					{
 						_tvFriendEMail.setText(_usr.getEmail());
+						_ivAdd.setOnClickListener(new OnClickListener()
+						{
+							@Override
+							public void onClick(View v) {
+								addFacebookFriendToList(_usr.getEmail(), _ivAdd);
+							}
+						});
 					}
 				});
 			}
@@ -750,6 +853,8 @@ public class FriendsActivity extends Activity
 			    	public void run()
 			    	{
 			    		_ivFriend.setImageBitmap(_bmp);
+			    		_pbImg.setVisibility(View.GONE);
+			    		_ivFriend.setVisibility(View.VISIBLE);
 			    	}
 			    });
 			}
@@ -771,6 +876,8 @@ public class FriendsActivity extends Activity
 			    	public void run()
 			    	{
 			    		_ivFriend.setImageResource(R.drawable.friends_view_cuadropic);
+			    		_pbImg.setVisibility(View.GONE);
+			    		_ivFriend.setVisibility(View.VISIBLE);
 			    	}
 			    });
 			}
@@ -786,6 +893,79 @@ public class FriendsActivity extends Activity
 		    		_ivFriend.setImageResource(R.drawable.friends_view_cuadropic);
 		    	}
 		    });
+		}
+	}
+	
+	public class AddFriendToListTask extends AsyncTask<Void, Void, Boolean>
+	{
+		private String _friendEMail;
+		private View _lay;
+		
+		public AddFriendToListTask(String femail, View v)
+		{
+			_friendEMail = femail;
+			_lay = v;
+		}
+		
+		@Override
+		protected Boolean doInBackground(Void... params)
+		{
+			try
+			{
+				HttpClient webClient = new DefaultHttpClient();
+				HttpPost webPost = new HttpPost("http://www.proyectoskafe.com/pakales/android/addFriend");
+
+				SharedPreferences mPrefs = getSharedPreferences("PrefFile",MODE_PRIVATE);
+				List<NameValuePair> data = new ArrayList<NameValuePair>(2);
+				data.add(new BasicNameValuePair("email", mPrefs.getString("login",null)));
+				data.add(new BasicNameValuePair("friend_mail", _friendEMail));
+				webPost.setEntity(new UrlEncodedFormEntity(data));
+				HttpResponse resp = webClient.execute(webPost);
+
+				InputStream resStream = resp.getEntity().getContent();
+				InputStreamReader srdr = new InputStreamReader(resStream);
+				BufferedReader brdr = new BufferedReader(srdr);
+				StringBuilder sbuild = new StringBuilder();
+				String sdata = null;
+				
+				while((sdata = brdr.readLine()) != null)
+				{
+					if(!sdata.equals("\n"))
+						sbuild.append(sdata);
+				}
+				
+				if(!sbuild.toString().contains("Ok"))
+					return false;
+			}
+			catch (ClientProtocolException e)
+			{
+				Log.i("Ver",">>>>>>Error Tx");
+				return false;
+			}
+			catch (IOException e)
+			{
+				Log.i("Ver",">>>>>>Error Cnx");
+				return false;
+			}
+			return true;
+		}
+		
+		@Override
+		protected void onPostExecute(final Boolean sucsses)
+		{
+			if(sucsses)
+			{
+				runOnUiThread(new Runnable()
+			    {
+			    	public void run()
+			    	{
+			    		_lay.setVisibility(View.GONE);
+			    		showProgress(true);
+			    		FriendsTask ft = new FriendsTask(false);
+			    		ft.execute((Void) null);
+			    	}
+			    });
+			}
 		}
 	}
 }

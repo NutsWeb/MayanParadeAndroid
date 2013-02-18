@@ -237,7 +237,7 @@ public class RegisterUserActivity extends Activity
 			
 			try
 			{
-				List<NameValuePair> data = new ArrayList<NameValuePair>(5);
+				List<NameValuePair> data = new ArrayList<NameValuePair>(6);
 				data.add(new BasicNameValuePair("name", etName.getText().toString()));
 				data.add(new BasicNameValuePair("lastname", etLastN.getText().toString()));
 				data.add(new BasicNameValuePair("email", etEmail.getText().toString()));

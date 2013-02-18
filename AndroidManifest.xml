@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nuts.mayanparade"
-    android:versionCode="7"
-    android:versionName="1.6" 
+    android:versionCode="10"
+    android:versionName="1.9" 
     android:installLocation="auto"
     android:screenOrientation="landscape">
 
@@ -36,6 +36,8 @@
 	<uses-feature android:name="android.hardware.touchscreen" />
 	<uses-feature android:name="android.hardware.touchscreen.multitouch" android:required="false" />
 	<uses-feature android:name="android.hardware.touchscreen.multitouch.distinct" android:required="false" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+	<uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:allowBackup="true"
@@ -45,7 +47,7 @@
         <activity
             android:name="com.nuts.mayanparade.LoginActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
             android:screenOrientation="landscape" >
             <intent-filter>
@@ -59,30 +61,38 @@
             android:screenOrientation="landscape"/>
         <activity 
             android:name="com.nuts.mayanparade.RegisterUserActivity" 
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity 
             android:name="com.nuts.mayanparade.MapActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity 
             android:name="com.nuts.mayanparade.MainActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity 
             android:name="com.nuts.mayanparade.GalleryActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity 
             android:name="com.nuts.mayanparade.VisorActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity 
             android:name="com.nuts.mayanparade.FriendsActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity 
             android:name="com.nuts.mayanparade.SettingsActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity 
             android:name="com.unity3d.player.VideoPlayer" 
             android:label="@string/app_name" 
             android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" 
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
 
         <meta-data

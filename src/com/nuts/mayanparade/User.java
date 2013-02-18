@@ -23,4 +23,8 @@ public class User
 	public String getEmail() {return Email;}
 	
 	public String getFacebookid() {return Facebookid;}
+	
+	public void setName(String name) {Name = name;}
+	
+	public void setEMail(String email) {Email = email;}
 }

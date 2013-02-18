@@ -167,6 +167,7 @@ public class MapActivity extends Activity
 	{
 		int pakalCount = _reg.size();
 		LinearLayout lay = (LinearLayout)findViewById(R.id.map_view_options_layout);
+		ImageView headLine = new ImageView(this);
 		
 		lay.removeAllViews();
 		
@@ -174,6 +175,10 @@ public class MapActivity extends Activity
 		TextView tvOption[] = new TextView[pakalCount];
 		TextView tvNum[] = new TextView[pakalCount];
 		ImageView ivArrow[] = new ImageView[pakalCount];
+		ImageView ivLine[] = new ImageView[pakalCount];
+		
+		headLine.setImageResource(R.drawable.map_view_greenline);
+		lay.addView(headLine, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		
 		for(int c=0; c<pakalCount; c++)
 		{
@@ -181,17 +186,26 @@ public class MapActivity extends Activity
 			tvOption[c] = new TextView(this);
 			tvNum[c] = new TextView(this);
 			ivArrow[c] = new ImageView(this);
+			ivLine[c] = new ImageView(this);
 			
 			tvOption[c].setText(_reg.get(c).getName());
 			tvNum[c].setText("N/M");
-			ivArrow[c].setImageResource(R.drawable.map_view_pinkarrow);
+			ivArrow[c].setImageResource(R.drawable.map_view_greenarrow);
+			ivLine[c].setImageResource(R.drawable.map_view_greenline);
 			
-			LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-			layParams.setMargins(10, 10, 50, 10);
-			layOption[c].addView(tvOption[c], layParams);
-			layOption[c].addView(tvNum[c], layParams);
-			layOption[c].addView(ivArrow[c], layParams);
+			LinearLayout.LayoutParams layParams1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams layParams2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams layParams3 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			layParams1.setMargins(10, 10, 30, 10);
+			layParams1.weight = 300;
+			layOption[c].addView(tvOption[c], layParams1);
+			layParams2.setMargins(10, 10, 10, 10);
+			layParams2.weight = 20;
+			layOption[c].addView(tvNum[c], layParams2);
+			layParams3.setMargins(10, 10, 10, 10);
+			layOption[c].addView(ivArrow[c], layParams3);
 			lay.addView(layOption[c], new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			lay.addView(ivLine[c], new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			
 			layOption[c].setId(c+1);
 			_regInd = c;
@@ -213,6 +227,7 @@ public class MapActivity extends Activity
 		List<SubRegion> sreg = reg.getSubegions();
 		int sregCount = sreg.size();
 		LinearLayout lay = (LinearLayout)findViewById(R.id.map_view_options_layout);
+		ImageView headLine = new ImageView(this);
 		
 		lay.removeAllViews();
 		_resetView = false;
@@ -221,26 +236,37 @@ public class MapActivity extends Activity
 		TextView tvOption[] = new TextView[sregCount];
 		TextView tvNum[] = new TextView[sregCount];
 		ImageView ivArrow[] = new ImageView[sregCount];
+		ImageView ivLine[] = new ImageView[sregCount];
 		
 		_regInd = reg.getIndex();
-		
+
+		lay.addView(headLine, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		for(int c=0; c<sregCount; c++)
 		{
 			layOption[c] = new LinearLayout(this);
 			tvOption[c] = new TextView(this);
 			tvNum[c] = new TextView(this);
 			ivArrow[c] = new ImageView(this);
+			ivLine[c] = new ImageView(this);
 			
 			tvOption[c].setText(sreg.get(c).getName());
 			tvNum[c].setText("N/M");
 			ivArrow[c].setImageResource(R.drawable.map_view_pinkarrow);
+			ivLine[c].setImageResource(R.drawable.map_view_pinkline);
 			
-			LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-			layParams.setMargins(10, 10, 50, 10);
-			layOption[c].addView(tvOption[c], layParams);
-			layOption[c].addView(tvNum[c], layParams);
-			layOption[c].addView(ivArrow[c], layParams);
+			LinearLayout.LayoutParams layParams1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams layParams2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams layParams3 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			layParams1.setMargins(10, 10, 20, 10);
+			layParams1.weight = 300;
+			layOption[c].addView(tvOption[c], layParams1);
+			layParams2.setMargins(10, 10, 10, 10);
+			layParams2.weight = 20;
+			layOption[c].addView(tvNum[c], layParams2);
+			layParams3.setMargins(10, 10, 10, 10);
+			layOption[c].addView(ivArrow[c], layParams3);
 			lay.addView(layOption[c], new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			lay.addView(ivLine[c], new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			
 			layOption[c].setId(c+1);
 			_sregInd = c;
